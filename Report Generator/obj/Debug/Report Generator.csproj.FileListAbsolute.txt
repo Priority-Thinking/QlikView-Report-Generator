@@ -1,0 +1,11 @@
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\bin\Debug\Report Generator.exe.config
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report Generator.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Interop.QlikView.dll
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report Generator.csproj.ResolveComReference.cache
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report_Generator.Properties.Resources.resources
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report Generator.csproj.GenerateResource.Cache
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\bin\Debug\Report Generator.exe
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\bin\Debug\Report Generator.pdb
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report Generator.exe
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\Report Generator.pdb
+C:\Users\Tim\Documents\GitHub\Report Generator\Report Generator\obj\Debug\GeneratorSpace.GenerateReport.resources
