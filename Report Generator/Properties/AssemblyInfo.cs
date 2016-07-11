@@ -1,4 +1,21 @@
-﻿using System.Reflection;
+﻿/*
+    This file is part of Report Generator.
+
+    Report Generator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Report Generator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Report Generator.If not, see<http://www.gnu.org/licenses/>.
+*/
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -8,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Report Generator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Institute 4 Priority Thinking, LLC")]
 [assembly: AssemblyProduct("Report Generator")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
