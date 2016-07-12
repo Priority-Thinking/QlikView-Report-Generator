@@ -1040,7 +1040,6 @@ namespace GeneratorSpace
             //not sure the if statements are completely necessary, but this gets the job done
             if (ReportControl.WordDoc != null)
             {
-                ReportControl.WordDoc.TablesOfContents[1].Update();  /// This will update the table of contents automatically before the document closes
                 string savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
                 Console.WriteLine(savePath);
                 lstLog.Items.Add("Saving completed print " + savePath);

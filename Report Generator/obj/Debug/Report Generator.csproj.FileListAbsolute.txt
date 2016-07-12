@@ -19,3 +19,4 @@ C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\bin\Debug\Report
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\GeneratorSpace.GenerateReport.resources
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\Report_Generator.Properties.Resources.resources
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\Report Generator.csproj.GenerateResource.Cache
+C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\Report Generator.csprojResolveAssemblyReference.cache

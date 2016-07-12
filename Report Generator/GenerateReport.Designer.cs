@@ -45,10 +45,8 @@ namespace GeneratorSpace
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.btnWordBrowse = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.txtWordPath = new System.Windows.Forms.TextBox();
             this.txtQlikPath = new System.Windows.Forms.TextBox();
             this.btnQlikBrowse = new System.Windows.Forms.Button();
@@ -304,7 +302,6 @@ namespace GeneratorSpace
 
         private System.Windows.Forms.Button btnWordBrowse;
         private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TextBox txtWordPath;
         private System.Windows.Forms.TextBox txtQlikPath;
         private System.Windows.Forms.Button btnQlikBrowse;
