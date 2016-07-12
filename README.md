@@ -1,0 +1,128 @@
+# Project Title
+
+The Report Generator bridges QlikView Personal Edition (Desktop) 12.0, which can be downloaded here: http://www.qlik.com/products, and Microsoft Word to facilitate the automatic copy/pasting of charts and objects into tagged locations in the Word document while making specified selections in the QlikView engine. The intent is that a user creates a Word template and a QikView chart repository in order to run small batches of custom reports.
+
+## Getting Started
+
+Download and run the Setup.zip file to install the program for use, or download the entire repository and open in Visual Studios to customize and contribute.
+
+### Understanding the Tags
+
+Tags are placed in the Word template so the Report Generator knows where to paste QlikView objects.  
+IGNORE ALL OF THE *'s THE GITHUB MARKDOWN PREVENTS THE USE OF ANGLE BRACKETS
+
+#### Chart Tags
+Follow the format <strong><*CH01></strong>  
+This will insert the chart from the QlikView document with the Object ID of CH01 at this location. You can find the Chart ID by right clicking an object, clicking Properties and finding the Chart ID field. If the Properties option is not available, you can see a full list of all charts and their IDs on a sheet by going to the Settings ribbon in the main toolbar, selecting Sheet Properties, and going to the Objects tab.
+
+#### Looping Tags
+Follow the format <strong>[FieldName]...[/FieldName]</strong>  
+These tags copy and paste whatever is between them for each possible value of FieldName. Hidden formatting symbols such as page breaks and new paragraphs will also be copied and pasted.
+
+[State]<*CH01>[/State]  
+Will paste the chart with Object ID of CH01 for each possible value of State.
+
+#### Selection Tags
+Follow the format <strong>{'FieldName1','FieldValue1','FieldName2','FieldValue2',...}</strong>  
+These tags force specific selections into the tags.
+
+<*CH01{'FieldName','FieldValue'}>  
+This will insert the chart with Object ID of CH01 after selecting FieldValue in the FieldName field.
+
+[State{'Country,'United States'}]<*CH01>[/State]  
+Will paste the chart with Object ID of CH01 for each possible value of State after making the selection United States in the Country field.
+
+You can also use the selection tag by itself in the "Static Selections" text box in the application interface in order to make a universal selection for all chart objects in the Word template.
+
+#### Quick Reference Tags
+Follow the format <strong><!QuickRefText></strong>  
+Refer to the section below to learn how to use these tags.
+
+### Application Interface
+
+We know it looks gross.
+
+#### Set Document Paths
+Browse for the Word Template (.doc and .docx) and QlikView Document (.qvf) using their respective "Browse" buttons.
+
+#### Quick Reference Variables
+If you happen to have a text object in QlikView that you reference very often add the QuickRefText (without the <>'s or !) and the Chart ID to the list. This will speed up the report generating and only works with Text Box objects in QlikView.
+
+#### Static Selections
+Use a static selection tag as mentioned above to apply a universal selection to all QlikView objects as they are copied into the Word Template.
+
+#### Log
+As the program runs, this list box is populated with the output telling the user what objects were copied successfully and where there may be errors in your Tag structure.
+
+### Known Issues
+
+If an error causes the program to break, your Word document will hang in limbo and prevent you from running any other actions against it. Open the Task Manager and end this process manually to continue.
+
+### Prerequisities
+
+To contribute, you must install the QlikView and Microsoft Word references to your Visual Studio project. Refer to the Built With section for information on how this program was built and tested.
+
+## Example
+
+RG-Example.doc  
+We find it helpful to turn on the hidden characters in Word (Crtl + Shift + 8)
+
+Prescription Tracker.qvw  
+This document is included when you download QlikView 12.0. Go to the Program Files, Examples folder, then Data folder to find this document.
+
+Target these two files with the Report Generator and click Generate to watch it run. 
+
+## Deployment
+
+If you wish to simply use the program, download and run the setup utility in the Setup.zip file.
+
+## Built With
+
+Microsoft Visual Studios 2015 Community - Windows Forms  
+Built and Tested on Windows 8.1 OS  
+Microsoft Word 15.0 Object Library Version 8.6  
+QlikView 12.0 Type Library Version 12.0
+
+## Compatibility and Testing
+
+This project was built and tested with the following software versions:
+
+QlikView 11.20  
+QlikView 12.0
+
+MS Word 2013
+
+## Contributing
+
+We will eventually add a CONTRIBUTING.MD to this project for more information.
+
+## Versioning
+
+We use semantic versioning. Reference tags and description for 
+
+## Authors
+
+Tim Kendrick - Priority Thinking, LLC  
+John Murray - Rochester Institute of Technology  
+Mitali Ajgaonkar - Rochester Institute of Technology  
+Grant Parker - Rochester Institute of Technology
+
+## License
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+## Acknowledgements
+
+https://community.qlik.com/  
+www.prioritythinking.com
