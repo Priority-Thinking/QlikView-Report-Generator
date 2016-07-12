@@ -9,33 +9,47 @@ Download and run the Setup.zip file to install the program for use, or download 
 ### Understanding the Tags
 
 Tags are placed in the Word template so the Report Generator knows where to paste QlikView objects.  
-IGNORE ALL OF THE *'s THE GITHUB MARKDOWN PREVENTS THE USE OF ANGLE BRACKETS
 
 #### Chart Tags
-Follow the format <strong><*CH01></strong>  
-This will insert the chart from the QlikView document with the Object ID of CH01 at this location. You can find the Chart ID by right clicking an object, clicking Properties and finding the Chart ID field. If the Properties option is not available, you can see a full list of all charts and their IDs on a sheet by going to the Settings ribbon in the main toolbar, selecting Sheet Properties, and going to the Objects tab.
+Follow the format  
+```
+<CH01>
+```    
+The above tag will insert the chart from the QlikView document with the Object ID of CH01 at this location. You can find the Chart ID by right clicking an object, clicking Properties and finding the Chart ID field. If the Properties option is not available, you can see a full list of all charts and their IDs on a sheet by going to the Settings ribbon in the main toolbar, selecting Sheet Properties, and going to the Objects tab.
 
 #### Looping Tags
-Follow the format <strong>[FieldName]...[/FieldName]</strong>  
+Follow the format  
+```
+[FieldName]...[/FieldName]
+```
 These tags copy and paste whatever is between them for each possible value of FieldName. Hidden formatting symbols such as page breaks and new paragraphs will also be copied and pasted.
-
-[State]<*CH01>[/State]  
-Will paste the chart with Object ID of CH01 for each possible value of State.
+```
+[State]<CH01>[/State]
+```
+The above tag will paste the chart with Object ID of CH01 for each possible value of State.
 
 #### Selection Tags
-Follow the format <strong>{'FieldName1','FieldValue1','FieldName2','FieldValue2',...}</strong>  
+Follow the format  
+```
+{'FieldName1','FieldValue1','FieldName2','FieldValue2',...}
+```
 These tags force specific selections into the tags.
-
-<*CH01{'FieldName','FieldValue'}>  
-This will insert the chart with Object ID of CH01 after selecting FieldValue in the FieldName field.
-
-[State{'Country,'United States'}]<*CH01>[/State]  
-Will paste the chart with Object ID of CH01 for each possible value of State after making the selection United States in the Country field.
+```
+<CH01{'FieldName','FieldValue'}>
+```
+The above tag will insert the chart with Object ID of CH01 after selecting FieldValue in the FieldName field.
+```
+[State{'Country,'United States'}]<CH01>[/State]
+```
+The above tag will insert the chart with Object ID of CH01 for each possible value of State after making the selection United States in the Country field.
 
 You can also use the selection tag by itself in the "Static Selections" text box in the application interface in order to make a universal selection for all chart objects in the Word template.
 
 #### Quick Reference Tags
-Follow the format <strong><!QuickRefText></strong>  
+Follow the format 
+```
+<!QuickRefText>
+```
 Refer to the section below to learn how to use these tags.
 
 ### Application Interface
@@ -98,14 +112,15 @@ We will eventually add a CONTRIBUTING.MD to this project for more information.
 
 ## Versioning
 
-We use semantic versioning. Reference tags and description for 
+We use semantic versioning. Reference tags and description for version number.
 
 ## Authors
 
-Tim Kendrick - Priority Thinking, LLC  
-John Murray - Rochester Institute of Technology  
-Mitali Ajgaonkar - Rochester Institute of Technology  
-Grant Parker - Rochester Institute of Technology
+<strong>Priority Thinking Team</strong>  
+Tim Kendrick  
+John Murray  
+Mitali Ajgaonkar  
+Grant Parker  
 
 ## License
 
@@ -124,5 +139,6 @@ Grant Parker - Rochester Institute of Technology
 
 ## Acknowledgements
 
+Rochester Institute of Technology  
 https://community.qlik.com/  
 www.prioritythinking.com
