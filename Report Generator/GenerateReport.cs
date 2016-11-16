@@ -93,6 +93,14 @@ namespace GeneratorSpace
 
             SheetObject QVObject = ReportControl.QVDoc.GetSheetObject(objectName);//store QV object in memory to avoid costly QV queries
 
+            if (QVObject != null && QVObject.GetObjectType() == 10)
+            {
+                var props = QVObject.GetSheet();
+                
+
+            }
+
+
             if (QVObject != null)
             {
                 Console.WriteLine("Object name: {0}. Field Name: {1}. Selection Name: {2}", objectName, fieldName, selectionName);
@@ -109,11 +117,12 @@ namespace GeneratorSpace
                         break;
 
                     case 10: //pivot table
-
+                      
                         QVObject.GetSheet().Activate();
                         ReportControl.QVApp.WaitForIdle();
                         QVObject.CopyTableToClipboard(true);
                         Console.WriteLine("Found CH item: {0}", objectName);
+                        
                         //pasteToWord(item);
                         break;
 
@@ -434,12 +443,79 @@ namespace GeneratorSpace
                    
                 }
                 */
+                var htm = Clipboard.GetData(DataFormats.Html);
+                if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">") && htm.ToString().Contains("Participant Group"))
+                {
+                    string argue = formatPivotTable(htm.ToString());
 
-                wordSelection.Paste();
+                    CopyToClipboard(argue);
+                    //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
+                    wordSelection.Paste();
+                    
+                }
+                else
+                {
+                    wordSelection.Paste();
+                }
             }
         }
 
-        //**NEW**parse file and process triangle bracketed tags
+        private string formatPivotTable(string htm)
+        {
+            String neww3 = htm.ToString().Replace("<TD BGCOLOR=\"#f5f5f5\">&nbsp\t", "");
+            String neww1 = neww3.ToString().Replace("<TD BGCOLOR=\"#ffffff\">&nbsp\t", "");
+            String neww2 = neww1.ToString().Replace("<TH NOWRAP BGCOLOR=\"#f5f5f5\"><FONT COLOR=\"#363636\"><B>Participant Group<B></B></FONT>\t", "");
+            String neww4 = neww2.Replace("<TABLE ", "<TABLE align=\"center\" ");
+            String[] spli = neww4.Split(new string[] { "<TR " }, StringSplitOptions.None);
+            if (spli.Length > 1)
+            {
+                string proc = spli[1];
+                int tds = proc.Split(new string[] { "<TD " }, StringSplitOptions.None).Length - 1;
+                double perTD;
+                if (tds > 0)
+                {
+                    perTD = 75.0 / tds;
+                }
+                else
+                {
+                    perTD = 75.0;
+                }
+                string ss = $"<TD width=\"{perTD}%\" ";
+                string nw = proc.Replace("<TD ", ss);
+                spli[1] = nw;
+                return String.Join("<TR ", spli);
+            }
+            return neww4;
+        }
+
+        private void CopyToClipboard(string fullHtmlContent)
+        {
+            // http://pavzav.blogspot.com/2010/11/how-to-copy-html-content-to-clipboard-c.html
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string header = @"Version:1.0
+                            StartHTML:<<<<<<<1
+                            EndHTML:<<<<<<<2
+                            StartFragment:<<<<<<<3
+                            EndFragment:<<<<<<<4";
+            sb.Append(header);
+            int startHTML = sb.Length;
+            sb.Append(fullHtmlContent);
+            int endHTML = sb.Length;
+   
+            sb.Replace("<<<<<<<1", To8CharsString(startHTML));
+            sb.Replace("<<<<<<<2", To8CharsString(endHTML));
+            sb.Replace("<<<<<<<3", To8CharsString(startHTML));
+            sb.Replace("<<<<<<<4", To8CharsString(endHTML));
+   
+            Clipboard.Clear();
+            Clipboard.SetText(sb.ToString(), TextDataFormat.Html);
+        }
+        private static string To8CharsString(int x)
+        {
+              return x.ToString("0#######");
+        }
+
+    //**NEW**parse file and process triangle bracketed tags
         private Tuple<int, int> findCharts(Word.Range content)
         {
             Console.WriteLine("Range search initiatied.");
@@ -458,7 +534,7 @@ namespace GeneratorSpace
             wordSelection.Find.MatchWildcards = true;
             wordSelection.Find.MatchSoundsLike = false;
             wordSelection.Find.MatchAllWordForms = false;
-
+            
             List<string> found = new List<string>();
             string str;
             string tagText;
@@ -489,7 +565,6 @@ namespace GeneratorSpace
                                 Console.WriteLine("Applying from quick reference: {0}, {1}", tagText, QuickRefValue[0].Item2);
                                 wordSelection.Paste();
                                 passOnThru = true;
-
                             }
                             else
                             {
@@ -517,7 +592,94 @@ namespace GeneratorSpace
                     wordSelection.Start = wordSelection.End;
                 }
             }
+
+            replaceQuickReferenceTagsInHeadersAndFooters(wordSelection);
+
             return new Tuple<int, int>(successes, failures);
+        }
+
+        private void replaceQuickReferenceTagsInHeadersAndFooters(Word.Range wordSelection)
+        {
+            // helpful link: http://stackoverflow.com/questions/17714642/replace-field-in-headerfooter-in-word-using-interop
+            foreach (Word.Section section in ReportControl.WordDoc.Sections)
+            {
+                //ReportControl.WordDoc.TrackRevisions = false;//Disable Tracking for the Field replacement operation
+                //Get all Headers
+                Word.HeadersFooters headers = section.Headers;
+                Word.HeadersFooters footers = section.Headers;
+
+                replaceQuickReferenceTagsInHeadersAndFooters(section.Headers);
+                replaceQuickReferenceTagsInHeadersAndFooters(section.Footers);
+            }
+        }
+
+        private void replaceQuickReferenceTagsInHeadersAndFooters(Word.HeadersFooters headersOrFooters)
+        {
+            //Section headerfooter loop for all types enum WdHeaderFooterIndex. wdHeaderFooterEvenPages/wdHeaderFooterFirstPage/wdHeaderFooterPrimary;                          
+            foreach (Microsoft.Office.Interop.Word.HeaderFooter header in headersOrFooters)
+            {
+                string headerText = header.Range.Text;
+                var myStoryRange = header.Range;
+                string tagText;
+                if (headerText.Contains('<') && headerText.Contains('>') && headerText.Length > 3)
+                {
+                    tagText = headerText.Split('<', '>')[1];
+                }
+                else
+                {
+                    tagText = string.Empty;
+                }
+
+                List<Tuple<string, string>> QuickRefValue = new List<Tuple<string, string>>();
+                if (tagText != string.Empty && tagText[0].ToString() == "!")
+                {
+                    //headerText.re
+                    Console.WriteLine("Found quick reference tag: {0}", tagText);
+                    Clipboard.Clear();
+                    QuickRefValue = QuickRefVars.Where(x => x.Key.Equals(tagText.Substring(1))).Select(x => x.Value).ToList();
+
+                    if (!(QuickRefValue.Count == 0))
+                    {
+                        if (QuickRefValue[0].Item2 != "")
+                        {
+                            //Clipboard.SetText(QuickRefValue[0].Item2);
+                            Console.WriteLine("Applying from quick reference: {0}, {1}", tagText, QuickRefValue[0].Item2);
+                            FindAndReplace(ReportControl.WordDoc, "<" + tagText + ">", QuickRefValue[0].Item2);
+                            //wordSelection.Paste();
+                        }
+                    }
+                    //wordSelection.Start = wordSelection.End;
+                }
+                else
+                {
+                    Console.WriteLine("There is something other than a quick reference tag in a header");
+                }
+            }
+        }
+
+
+        private void FindAndReplace(Word.Document document, string placeHolder, string newText)
+        {
+            // this was taken from here: http://forum.katarincic.com/default.aspx?g=posts&m=456
+            object missingObject = null;
+            object item = Word.WdGoToItem.wdGoToPage;
+
+            object whichItem = Word.WdGoToDirection.wdGoToFirst;
+            object replaceAll = Word.WdReplace.wdReplaceAll;
+            object forward = true;
+            object matchAllWord = true;
+            object matchCase = false;
+            object originalText = placeHolder;
+            object replaceText = newText;
+
+            document.GoTo(ref item, ref whichItem, ref missingObject, ref missingObject);
+            foreach (Word.Range rng in document.StoryRanges)
+            {
+                rng.Find.Execute(ref originalText, ref matchCase,
+                ref matchAllWord, ref missingObject, ref missingObject, ref missingObject, ref forward,
+                ref missingObject, ref missingObject, ref replaceText, ref replaceAll, ref missingObject,
+                ref missingObject, ref missingObject, ref missingObject);
+            }
         }
 
         private void preProcessing(Word.Range content)
@@ -823,16 +985,20 @@ namespace GeneratorSpace
                     }
                     else
                     {
-                        //load global variables with file paths that have passed verification
-                        ReportControl.wordPath = wordPath;
-                        ReportControl.qlikPath = qlikPath;
-                        openWordDocument();
-                        openQlikDocument();
-
-                        //validate any selection tags in the static selection tag text box
-                        if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
+                        try
                         {
+<<<<<<< HEAD
                             try
+=======
+                            //load global variables with file paths that have passed verification
+                            ReportControl.wordPath = wordPath;
+                            ReportControl.qlikPath = qlikPath;
+                            openWordDocument();
+                            openQlikDocument();
+
+                            //validate any selection tags in the static selection tag text box
+                            if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
+>>>>>>> origin/master
                             {
                                 lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
                                 Console.WriteLine("Static selection tag validated. Beginning Word search process.");
@@ -850,6 +1016,7 @@ namespace GeneratorSpace
                                 boxsuccess += CResults.Item1;
                                 boxfail += CResults.Item2;
                                 Console.WriteLine(ReportControl.WordDoc.Shapes.Count);
+<<<<<<< HEAD
 
                                 //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
                                 foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
@@ -883,11 +1050,45 @@ namespace GeneratorSpace
                             }
                         }
                         else
-                        {
-                            lstLog.Items.Add("Static selection tag could not be validated. Cannot proceed until resolved.");
-                            Console.WriteLine("Static selection tag could not be validated. Cannot proceed until resolved.");
+=======
 
-                            //the if statement opens the qlik document, this ensures that it is closed in this path
+                                //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
+                                foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
+                                {
+                                    CResults = findChartsInShapes(shape);
+                                    boxsuccess += CResults.Item1;
+                                    boxfail += CResults.Item2;
+                                }
+                                CResults = new Tuple<int, int>(boxsuccess, boxfail);
+
+                                lstLog.Items.Add("############## Looping Results ###################");
+                                lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
+                                lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
+                                lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
+                                lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
+                                lstLog.Items.Add("##############################################");
+
+                                lstLog.Items.Add("############## Chart Retrieval Breakdown ############");
+                                lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
+                                lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
+                                lstLog.Items.Add("###############################################");
+                                lstLog.SelectedIndex = lstLog.Items.Count - 1;
+
+                                exitWithGrace();
+                            }
+                            else
+                            {
+                                lstLog.Items.Add("Static selection tag could not be validated. Cannot proceed until resolved.");
+                                Console.WriteLine("Static selection tag could not be validated. Cannot proceed until resolved.");
+
+                                //the if statement opens the qlik document, this ensures that it is closed in this path
+                                exitWithGrace();
+                            }
+                        } catch (Exception ee)
+>>>>>>> origin/master
+                        {
+                            lstLog.Items.Add($"A(n) {ee.GetType().Name} has caused the program to close");
+                            Console.WriteLine($"A(n) {ee.GetType().Name} has caused the program to close");
                             exitWithGrace();
                         }
                     }
