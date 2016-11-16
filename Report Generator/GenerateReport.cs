@@ -832,46 +832,55 @@ namespace GeneratorSpace
                         //validate any selection tags in the static selection tag text box
                         if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
                         {
-                            lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
-                            Console.WriteLine("Static selection tag validated. Beginning Word search process.");
-                            ReportControl.staticSelections = GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim());//save static selections
-
-                            preProcessing(ReportControl.WordDoc.Content);       //removes square brackets from charts so no false positives during Looping
-                            Tuple<int, int, int, int> BResults;
-                            BResults = findLooping();
-                            postProcessing(ReportControl.WordDoc.Content);      //puts back square brackets after Looping
-
-                            Tuple<int, int> CResults;
-                            int boxsuccess = 0;
-                            int boxfail = 0;
-                            CResults = findCharts(ReportControl.WordDoc.Content);
-                            boxsuccess += CResults.Item1;
-                            boxfail += CResults.Item2;
-                            Console.WriteLine(ReportControl.WordDoc.Shapes.Count);
-
-                            //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
-                            foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
+                            try
                             {
-                                CResults = findChartsInShapes(shape);
+                                lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
+                                Console.WriteLine("Static selection tag validated. Beginning Word search process.");
+                                ReportControl.staticSelections = GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim());//save static selections
+
+                                preProcessing(ReportControl.WordDoc.Content);       //removes square brackets from charts so no false positives during Looping
+                                Tuple<int, int, int, int> BResults;
+                                BResults = findLooping();
+                                postProcessing(ReportControl.WordDoc.Content);      //puts back square brackets after Looping
+
+                                Tuple<int, int> CResults;
+                                int boxsuccess = 0;
+                                int boxfail = 0;
+                                CResults = findCharts(ReportControl.WordDoc.Content);
                                 boxsuccess += CResults.Item1;
                                 boxfail += CResults.Item2;
+                                Console.WriteLine(ReportControl.WordDoc.Shapes.Count);
+
+                                //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
+                                foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
+                                {
+                                    CResults = findChartsInShapes(shape);
+                                    boxsuccess += CResults.Item1;
+                                    boxfail += CResults.Item2;
+                                }
+                                CResults = new Tuple<int, int>(boxsuccess, boxfail);
+
+                                lstLog.Items.Add("############## Looping Results ###################");
+                                lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
+                                lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
+                                lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
+                                lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
+                                lstLog.Items.Add("##############################################");
+
+                                lstLog.Items.Add("############## Chart Retrieval Breakdown ############");
+                                lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
+                                lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
+                                lstLog.Items.Add("###############################################");
+                                lstLog.SelectedIndex = lstLog.Items.Count - 1;
                             }
-                            CResults = new Tuple<int, int>(boxsuccess, boxfail);
-
-                            lstLog.Items.Add("############## Looping Results ###################");
-                            lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
-                            lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
-                            lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
-                            lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
-                            lstLog.Items.Add("##############################################");
-
-                            lstLog.Items.Add("############## Chart Retrieval Breakdown ############");
-                            lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
-                            lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
-                            lstLog.Items.Add("###############################################");
-                            lstLog.SelectedIndex = lstLog.Items.Count - 1;
-
-                            exitWithGrace();
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.StackTrace);
+                            }
+                            finally
+                            {
+                                exitWithGrace();
+                            }
                         }
                         else
                         {
