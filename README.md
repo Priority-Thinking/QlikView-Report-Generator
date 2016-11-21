@@ -39,7 +39,7 @@ These tags force specific selections into the tags.
 ```
 The above tag will insert the chart with Object ID of CH01 after selecting FieldValue in the FieldName field.
 ```
-[State{'Country,'United States'}]<CH01>[/State]
+[State{'Country','United States'}]<CH01>[/State]
 ```
 The above tag will insert the chart with Object ID of CH01 for each possible value of State after making the selection United States in the Country field.
 
@@ -52,9 +52,19 @@ Follow the format
 ```
 Refer to the section below to learn how to use these tags.
 
-### Application Interface
+#### Image Attribute Tags
+Attribute tags can be added to certain chart tags in order to customize a chart image as it is inserted into Word. Chart tags have attribute tags added in the following manner:  
+```
+<CH01?height=2.00&width=3.55>
+<CH01{'FieldName','FieldValue'}?height=2.00&width=3.55>
+```
+The above example sets the height to 2 inches and the width to 3.55. Specifying a single dimension will maintain the image's aspect ratio. As of version 1.1.0, only the height and width attributes can be adjusted.
 
-We know it looks gross.
+#### Pivot Tables
+In pivot tables any column with the label as a single asterisk will be deleted.
+
+### Using the Application
+Reference interface.png to see what the application looks like when run.
 
 #### Set Document Paths
 Browse for the Word Template (.doc and .docx) and QlikView Document (.qvf) using their respective "Browse" buttons.
@@ -101,11 +111,9 @@ QlikView 12.0 Type Library Version 12.0
 
 This project was built and tested with the following software versions:
 
-QlikView 11.20  
-QlikView 12.0
-
-MS Word 2013  
-MS Word 2016
+QlikView 11.20, 12.0  
+  
+MS Word 2013, 2016  
 
 ## Contributing
 
