@@ -413,13 +413,22 @@ namespace GeneratorSpace
 
         //given a chart tag (eg. "CH01") pastes it to word by parsing for the chart
         //TODO: rework this to not have to parse the document to paste
-        private void pasteToWord(Word.Range wordSelection)
+        private void pasteToWord(Word.Range wordSelection, System.Drawing.Size? customSizeForImages = null)
         {
             if (Clipboard.ContainsData(DataFormats.Bitmap))//check data format and paste
             {
                 lstLog.Items.Add("Chart Found");
                 Console.WriteLine("Chart Found");
-                wordSelection.PasteSpecial(0, false, Word.WdOLEPlacement.wdInLine, false, Word.WdPasteDataType.wdPasteEnhancedMetafile);
+                if (customSizeForImages != null)
+                {
+                    System.Drawing.Bitmap img = (System.Drawing.Bitmap)Clipboard.GetData(DataFormats.Bitmap);
+                    System.Drawing.Bitmap resizedImg = new System.Drawing.Bitmap(img, new System.Drawing.Size(customSizeForImages.Value.Width == 0 ? img.Size.Width : customSizeForImages.Value.Width, customSizeForImages.Value.Height == 0 ? img.Size.Height : customSizeForImages.Value.Height));
+                    Clipboard.SetData(DataFormats.Bitmap, resizedImg);
+                    wordSelection.Paste();
+                } else
+                {
+                    wordSelection.PasteSpecial(0, false, Word.WdOLEPlacement.wdInLine, false, Word.WdPasteDataType.wdPasteEnhancedMetafile);
+                }
             }
             else if (Clipboard.ContainsText())
             {
@@ -440,10 +449,17 @@ namespace GeneratorSpace
                 if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">") && htm.ToString().Contains("*"))
                 {
                     string argue = formatPivotTable(htm.ToString());
-
                     CopyToClipboard(argue);
                     //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
                     wordSelection.Paste();
+                }
+                else if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">"))
+                {
+                    string argue = htm.ToString().Replace("<TABLE ", "<TABLE align=\"center\" ");
+                    CopyToClipboard(argue);
+                    //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
+                    wordSelection.Paste();
+
                 }
                 else
                 {
@@ -568,9 +584,70 @@ namespace GeneratorSpace
 
                     if (!passOnThru)
                     {
-                        temp = GetChartsFromQV(tagText, dictLookup);
+                        string[] paramsExists;
+                        if (tagText.Contains("?"))
+                        {
+                            paramsExists = tagText.Split('?');
+                        }
+                        else
+                        {
+                            paramsExists = new string[1];
+                            paramsExists[0] = tagText;
+                        }
+                        temp = GetChartsFromQV(paramsExists[0], dictLookup);
 
-                        if (temp)
+                        if (temp && paramsExists.Length > 1)
+                        {
+                            //string[] s1 = tagText.Split('?');
+                            string[] s2 = paramsExists[1].Split('&');
+                            if (tagText.Contains("height=") && tagText.Contains("width="))
+                            {
+                                int height = 0;
+                                int width = 0;
+                                foreach (string s in s2)
+                                {
+                                    if (s.Contains("height="))
+                                    {
+                                        string[] s3 = s.Split('=');
+                                        height = Int32.Parse(s3[1]);
+                                    }
+                                    else if (s.Contains("width="))
+                                    {
+                                        string[] s3 = s.Split('=');
+                                        width = Int32.Parse(s3[1]);
+                                    }
+                                }
+                                pasteToWord(wordSelection, new System.Drawing.Size(width, height));
+                                successes++;
+                            } else if (tagText.Contains("height="))
+                            {
+                                int height = 0;
+                                foreach (string s in s2)
+                                {
+                                    if (s.Contains("height="))
+                                    {
+                                        string[] s3 = s.Split('=');
+                                        height = Int32.Parse(s3[1]);
+                                    }
+                                }
+                                pasteToWord(wordSelection, new System.Drawing.Size(0, height));
+                                successes++;
+                            } else if (tagText.Contains("width="))
+                            {
+                                int width = 0;
+                                foreach (string s in s2)
+                                {
+                                    if (s.Contains("width="))
+                                    {
+                                        string[] s3 = s.Split('=');
+                                        width = Int32.Parse(s3[1]);
+                                    }
+                                }
+                                pasteToWord(wordSelection, new System.Drawing.Size(0, width));
+                                successes++;
+                            }
+                        }
+                        else if (temp)
                         {
                             pasteToWord(wordSelection);
                             successes++;
