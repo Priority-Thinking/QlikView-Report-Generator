@@ -285,7 +285,7 @@ namespace GeneratorSpace
             this.Controls.Add(this.grpStaticSelections);
             this.Controls.Add(this.btnGenerate);
             this.Name = "GenerateReport";
-            this.Text = "Generate Report";
+            this.Text = "Report Generator";
             this.Load += new System.EventHandler(this.GenerateReport_Load);
             this.grpStaticSelections.ResumeLayout(false);
             this.grpStaticSelections.PerformLayout();

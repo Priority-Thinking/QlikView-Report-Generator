@@ -104,7 +104,8 @@ This project was built and tested with the following software versions:
 QlikView 11.20  
 QlikView 12.0
 
-MS Word 2013
+MS Word 2013  
+MS Word 2016
 
 ## Contributing
 
@@ -121,6 +122,7 @@ Tim Kendrick
 John Murray  
 Mitali Ajgaonkar  
 Grant Parker  
+Qasim Ali  
 
 ## License
 

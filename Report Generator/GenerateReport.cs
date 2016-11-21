@@ -30,6 +30,7 @@ namespace GeneratorSpace
     {
         //global variable dictionary for quick reference strings
         Dictionary<string, Tuple<string, string>> QuickRefVars = new Dictionary<string, Tuple<string, string>>();
+        System.Diagnostics.Stopwatch stopWatch;
 
         public GenerateReport()
         {
@@ -92,14 +93,6 @@ namespace GeneratorSpace
             }
 
             SheetObject QVObject = ReportControl.QVDoc.GetSheetObject(objectName);//store QV object in memory to avoid costly QV queries
-
-            if (QVObject != null && QVObject.GetObjectType() == 10)
-            {
-                var props = QVObject.GetSheet();
-                
-
-            }
-
 
             if (QVObject != null)
             {
@@ -444,14 +437,13 @@ namespace GeneratorSpace
                 }
                 */
                 var htm = Clipboard.GetData(DataFormats.Html);
-                if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">") && htm.ToString().Contains("Participant Group"))
+                if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">") && htm.ToString().Contains("*"))
                 {
                     string argue = formatPivotTable(htm.ToString());
 
                     CopyToClipboard(argue);
                     //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
                     wordSelection.Paste();
-                    
                 }
                 else
                 {
@@ -464,7 +456,7 @@ namespace GeneratorSpace
         {
             String neww3 = htm.ToString().Replace("<TD BGCOLOR=\"#f5f5f5\">&nbsp\t", "");
             String neww1 = neww3.ToString().Replace("<TD BGCOLOR=\"#ffffff\">&nbsp\t", "");
-            String neww2 = neww1.ToString().Replace("<TH NOWRAP BGCOLOR=\"#f5f5f5\"><FONT COLOR=\"#363636\"><B>Participant Group<B></B></FONT>\t", "");
+            String neww2 = neww1.ToString().Replace("<TH NOWRAP BGCOLOR=\"#f5f5f5\"><FONT COLOR=\"#363636\"><B>*<B></B></FONT>\t", "");
             String neww4 = neww2.Replace("<TABLE ", "<TABLE align=\"center\" ");
             String[] spli = neww4.Split(new string[] { "<TR " }, StringSplitOptions.None);
             if (spli.Length > 1)
@@ -973,7 +965,9 @@ namespace GeneratorSpace
             string wordPath = txtWordPath.Text;
             string qlikPath = txtQlikPath.Text;
             lstLog.Items.Clear();
-
+            
+            stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
 
             if (wordPath != "" && qlikPath != "") //process won't work unless both paths are specified
             {
@@ -987,9 +981,6 @@ namespace GeneratorSpace
                     {
                         try
                         {
-<<<<<<< HEAD
-                            try
-=======
                             //load global variables with file paths that have passed verification
                             ReportControl.wordPath = wordPath;
                             ReportControl.qlikPath = qlikPath;
@@ -998,7 +989,6 @@ namespace GeneratorSpace
 
                             //validate any selection tags in the static selection tag text box
                             if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
->>>>>>> origin/master
                             {
                                 lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
                                 Console.WriteLine("Static selection tag validated. Beginning Word search process.");
@@ -1016,7 +1006,6 @@ namespace GeneratorSpace
                                 boxsuccess += CResults.Item1;
                                 boxfail += CResults.Item2;
                                 Console.WriteLine(ReportControl.WordDoc.Shapes.Count);
-<<<<<<< HEAD
 
                                 //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
                                 foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
@@ -1025,53 +1014,24 @@ namespace GeneratorSpace
                                     boxsuccess += CResults.Item1;
                                     boxfail += CResults.Item2;
                                 }
+
                                 CResults = new Tuple<int, int>(boxsuccess, boxfail);
 
-                                lstLog.Items.Add("############## Looping Results ###################");
+                                stopWatch.Stop();
+                                TimeSpan runTime = stopWatch.Elapsed;
+
+                                lstLog.Items.Add("############## Looping Results ##############");
                                 lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
                                 lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
                                 lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
                                 lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
                                 lstLog.Items.Add("##############################################");
 
-                                lstLog.Items.Add("############## Chart Retrieval Breakdown ############");
+                                lstLog.Items.Add("############## Chart Retrieval Breakdown ##############");
                                 lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
                                 lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
-                                lstLog.Items.Add("###############################################");
-                                lstLog.SelectedIndex = lstLog.Items.Count - 1;
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.StackTrace);
-                            }
-                            finally
-                            {
-                                exitWithGrace();
-                            }
-                        }
-                        else
-=======
-
-                                //lastly, we need to check all of the text boxes and other shapes in the word document for any tags
-                                foreach (Word.Shape shape in ReportControl.WordDoc.Shapes)
-                                {
-                                    CResults = findChartsInShapes(shape);
-                                    boxsuccess += CResults.Item1;
-                                    boxfail += CResults.Item2;
-                                }
-                                CResults = new Tuple<int, int>(boxsuccess, boxfail);
-
-                                lstLog.Items.Add("############## Looping Results ###################");
-                                lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
-                                lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
-                                lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
-                                lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
-                                lstLog.Items.Add("##############################################");
-
-                                lstLog.Items.Add("############## Chart Retrieval Breakdown ############");
-                                lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
-                                lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
-                                lstLog.Items.Add("###############################################");
+                                lstLog.Items.Add("Run Time: " + runTime.TotalMinutes + " minutes");
+                                lstLog.Items.Add("############## END ##############");
                                 lstLog.SelectedIndex = lstLog.Items.Count - 1;
 
                                 exitWithGrace();
@@ -1085,7 +1045,6 @@ namespace GeneratorSpace
                                 exitWithGrace();
                             }
                         } catch (Exception ee)
->>>>>>> origin/master
                         {
                             lstLog.Items.Add($"A(n) {ee.GetType().Name} has caused the program to close");
                             Console.WriteLine($"A(n) {ee.GetType().Name} has caused the program to close");
@@ -1269,6 +1228,7 @@ namespace GeneratorSpace
         /// </summary>
         private void exitWithGrace()
         {
+
             //call specialized closing methods
             closeQlikDocument();
             closeWordDocument();
