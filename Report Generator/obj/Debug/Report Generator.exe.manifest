@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Report Generator.exe" size="58840">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Report Generator.exe" size="60888">
       <assemblyIdentity name="Report Generator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9LuGnBpH79ZOVGhUTIIrmXGoel1c0PixkupR2mC8ghQ=</dsig:DigestValue>
+        <dsig:DigestValue>ekJDN0xb7CyO8jkFW/nS8icXttBMnC34fsf9QnEmCBI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -413,58 +413,80 @@ namespace GeneratorSpace
 
         //given a chart tag (eg. "CH01") pastes it to word by parsing for the chart
         //TODO: rework this to not have to parse the document to paste
-        private void pasteToWord(Word.Range wordSelection, System.Drawing.Size? customSizeForImages = null)
+        private void pasteToWord(Word.Range wordSelection, Dictionary<string,string> parameters = null)
         {
             if (Clipboard.ContainsData(DataFormats.Bitmap))//check data format and paste
             {
-                lstLog.Items.Add("Chart Found");
-                Console.WriteLine("Chart Found");
-                if (customSizeForImages != null)
+                lstLog.Items.Add("Chart In Clipboard");
+                Console.WriteLine("Chart Found In Clipboard");
+                if (parameters != null)
                 {
+                    double inchWidth = Convert.ToDouble(parameters["WIDTH"]);
+                    double inchHeight = Convert.ToDouble(parameters["HEIGHT"]);
+                    int pixelWidth, pixelHeight;
+                    float resWidth, resHeight;
+                    double hwratio, setHeight, setWidth;
+
                     System.Drawing.Bitmap img = (System.Drawing.Bitmap)Clipboard.GetData(DataFormats.Bitmap);
-                    System.Drawing.Bitmap resizedImg = new System.Drawing.Bitmap(img, new System.Drawing.Size(customSizeForImages.Value.Width == 0 ? img.Size.Width : customSizeForImages.Value.Width, customSizeForImages.Value.Height == 0 ? img.Size.Height : customSizeForImages.Value.Height));
+                    resWidth = img.HorizontalResolution;
+                    resHeight = img.VerticalResolution;
+                    pixelWidth = img.Width;
+                    pixelHeight = img.Height;
+                    hwratio = pixelHeight / pixelWidth;
+
+                    if (parameters.ContainsKey("HEIGHT"))
+                    {
+                        setHeight = inchHeight * resHeight;
+
+                        if(parameters.ContainsKey("WIDTH"))
+                        {
+                            setWidth = inchWidth * resWidth;
+                        }
+                        else
+                        {
+                            setWidth = setHeight / hwratio;
+                        }
+                    }
+                    else if (parameters.ContainsKey("WIDTH"))
+                    {
+                        setWidth = inchWidth * resWidth;
+                        setHeight = hwratio * setWidth;
+                    }
+                    else
+                    {
+                        setWidth = pixelWidth;
+                        setHeight = pixelHeight;
+                    }
+
+                    System.Drawing.Bitmap resizedImg = new System.Drawing.Bitmap(img,Convert.ToInt32(setWidth),Convert.ToInt32(setHeight));
                     Clipboard.SetData(DataFormats.Bitmap, resizedImg);
                     wordSelection.Paste();
-                } else
+                }
+                else
                 {
                     wordSelection.PasteSpecial(0, false, Word.WdOLEPlacement.wdInLine, false, Word.WdPasteDataType.wdPasteEnhancedMetafile);
                 }
             }
             else if (Clipboard.ContainsText())
             {
-                lstLog.Items.Add("Text Object Found");
-                Console.WriteLine("Text Object Found");
-                //  tamp_val = wordSelection.Paste();
-                //change this code
-                /*if ( tamp_val != null)
-                {
-                    Console.WriteLine("I have value of this tag already in a variable so no need of fetchiing it from qlik view");
-                    Clipboard.Clear();
-                    // tamp_val.CopyTextToClipboard();
-                    Clipboard.SetText(tamp_val);
-                   
-                }
-                */
+                lstLog.Items.Add("Text Object In Clipboard");
+                Console.WriteLine("Text Object In Clipboard");
+
                 var htm = Clipboard.GetData(DataFormats.Html);
                 if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">") && htm.ToString().Contains("*"))
                 {
                     string argue = formatPivotTable(htm.ToString());
                     CopyToClipboard(argue);
                     //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
-                    wordSelection.Paste();
                 }
                 else if (htm != null && htm.ToString().Contains("<META CONTENT=\"PivotTable\">"))
                 {
                     string argue = htm.ToString().Replace("<TABLE ", "<TABLE align=\"center\" ");
                     CopyToClipboard(argue);
                     //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
-                    wordSelection.Paste();
+                }
 
-                }
-                else
-                {
-                    wordSelection.Paste();
-                }
+                wordSelection.Paste();
             }
         }
 
@@ -584,68 +606,80 @@ namespace GeneratorSpace
 
                     if (!passOnThru)
                     {
-                        string[] paramsExists;
+                        string paramStr = "";
+                        string tagStr = "";
+                        string[] paramExists = new string[0];
+
                         if (tagText.Contains("?"))
                         {
-                            paramsExists = tagText.Split('?');
+                            paramExists = tagText.Split('?');
+                            tagStr = paramExists[0];
+                            paramStr = paramExists[1];
                         }
                         else
                         {
-                            paramsExists = new string[1];
-                            paramsExists[0] = tagText;
+                            tagStr = tagText;
                         }
-                        temp = GetChartsFromQV(paramsExists[0], dictLookup);
 
-                        if (temp && paramsExists.Length > 1)
+                        temp = GetChartsFromQV(tagStr, dictLookup);
+
+                        if (temp && paramExists.Length > 1)
                         {
-                            //string[] s1 = tagText.Split('?');
-                            string[] s2 = paramsExists[1].Split('&');
-                            if (tagText.Contains("height=") && tagText.Contains("width="))
+                            List<string> paramArr = new List<string>();
+
+                            if (paramStr.Contains('&'))
                             {
-                                int height = 0;
-                                int width = 0;
-                                foreach (string s in s2)
-                                {
-                                    if (s.Contains("height="))
-                                    {
-                                        string[] s3 = s.Split('=');
-                                        height = Int32.Parse(s3[1]);
-                                    }
-                                    else if (s.Contains("width="))
-                                    {
-                                        string[] s3 = s.Split('=');
-                                        width = Int32.Parse(s3[1]);
-                                    }
-                                }
-                                pasteToWord(wordSelection, new System.Drawing.Size(width, height));
-                                successes++;
-                            } else if (tagText.Contains("height="))
-                            {
-                                int height = 0;
-                                foreach (string s in s2)
-                                {
-                                    if (s.Contains("height="))
-                                    {
-                                        string[] s3 = s.Split('=');
-                                        height = Int32.Parse(s3[1]);
-                                    }
-                                }
-                                pasteToWord(wordSelection, new System.Drawing.Size(0, height));
-                                successes++;
-                            } else if (tagText.Contains("width="))
-                            {
-                                int width = 0;
-                                foreach (string s in s2)
-                                {
-                                    if (s.Contains("width="))
-                                    {
-                                        string[] s3 = s.Split('=');
-                                        width = Int32.Parse(s3[1]);
-                                    }
-                                }
-                                pasteToWord(wordSelection, new System.Drawing.Size(0, width));
-                                successes++;
+                                paramArr = paramStr.Split('&').ToList();
                             }
+                            else
+                            {
+                                paramArr.Add(paramStr);
+                            }
+
+                            Dictionary<string, string> attributes = new Dictionary<string, string>();
+
+                            foreach (string par in paramArr)
+                            {
+                                string[] index = new string[2];
+                                string parAtt = "";
+                                string parVal = "";
+                                if (par.Contains('='))
+                                {
+                                    index = par.Split('=');
+                                    parAtt = index[0];
+                                    parVal = index[1];
+                                }
+
+                                switch (parAtt.ToUpper())
+                                {
+                                    case "HEIGHT":
+                                        try
+                                        {
+                                            Convert.ToDouble(parVal);
+                                            attributes.Add("HEIGHT", parVal);
+                                        }
+                                        catch
+                                        {
+                                            break;
+                                        }
+                                        break;
+                                    case "WIDTH":
+                                        try
+                                        {
+                                            Convert.ToDouble(parVal);
+                                            attributes.Add("WIDTH", parVal);
+                                        }
+                                        catch
+                                        {
+                                            break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            pasteToWord(wordSelection, attributes);
+                            successes++;
                         }
                         else if (temp)
                         {
@@ -1562,6 +1596,7 @@ namespace GeneratorSpace
     {
         public string Name { get; set; }
         public List<Tag> Selections { get; set; }
+        public string attributes { get; set; }
 
         public Chart(string name, List<Tag> selections)
         {
@@ -1572,12 +1607,13 @@ namespace GeneratorSpace
         //reads in chart of format [chartname{Field1,Selection1,Field2,Selection2...}]
         public Chart(string cString)
         {
-            if (!cString.Contains('{'))
+            if (!cString.Contains('{') && !cString.Contains('?'))
             {
                 this.Name = cString.Trim("<> ".ToCharArray());
                 this.Selections = null;
+                this.attributes = null;
             }
-            else
+            else if (cString.Contains('{') && !cString.Contains('?'))
             {
                 Regex rgx = new Regex("{.*}", RegexOptions.IgnorePatternWhitespace);
                 string findSelections = rgx.Match(cString).Value;
@@ -1585,12 +1621,25 @@ namespace GeneratorSpace
                 rgx = new Regex("<.*{", RegexOptions.IgnorePatternWhitespace);
                 findSelections = rgx.Match(cString).Value;
                 this.Name = findSelections.Trim("<{ ".ToCharArray());
+                this.attributes = null;
+            }
+            else
+            {
+                string[] split = cString.Split('?');
+                this.attributes = "?" + split[1].Trim(" >".ToCharArray());
+
+                Regex rgx = new Regex("{.*}", RegexOptions.IgnorePatternWhitespace);
+                string findSelections = rgx.Match(split[0]).Value;
+                this.Selections = Tag.interpretSelectionTag(findSelections);
+                rgx = new Regex("<.*{", RegexOptions.IgnorePatternWhitespace);
+                findSelections = rgx.Match(split[0]).Value;
+                this.Name = findSelections.Trim("<{ ".ToCharArray());
             }
         }
 
         public override string ToString()
         {
-            return "<" + this.Name + Tag.listTagsToString(this.Selections) + ">";
+            return "<" + this.Name + Tag.listTagsToString(this.Selections) + this.attributes + ">";
         }
 
         public Chart AddSelectionTag(Tag selection)
