@@ -162,7 +162,7 @@ namespace GeneratorSpace
             else
             {
                 Console.WriteLine("object {0} not found, moving on to the next one", objectName);
-                lstLog.Items.Add("object " + objectName + " not found, moving on to the next one");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("object " + objectName + " not found, moving on to the next one");
                 return false;
             }
         }
@@ -211,20 +211,20 @@ namespace GeneratorSpace
             int copyEnd = loopStartIndex;
             if (bField != null)//making sure the field exists
             {
-                lstLog.Items.Add("Applying Looping selections.");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying Looping selections.");
                 Console.WriteLine("Applying Looping selections.");
                 var selections = bField.GetPossibleValues();
 
                 if (selections != null)//making sure the field has selections
                 {
-                    lstLog.Items.Add("Number of possible values: " + selections.Count);
+                    lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of possible values: " + selections.Count);
                     Console.WriteLine("Number of possible values: {0}", selections.Count);
                     Clipboard.Clear();
                     ReportControl.WordDoc.Range(deleteStart, deleteEnd).Delete();//remove old Looping tag and text
 
                     for (int i = 0; i < selections.Count; i++)
                     {
-                        lstLog.Items.Add("Applying field selection to " + loopField + " with a value of " + selections[i].Text);
+                        lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying field selection to " + loopField + " with a value of " + selections[i].Text);
                         Console.WriteLine("Applying field selection to {0} with a value of {1}", loopField, selections[i].Text);
                         //pasteText = copyText.Trim().TrimEnd('>')+"{"+loopField+","+selections[i].Text+","+loopSelectionTag.Trim('{','}')+"}>\v";
                         //add loop selection tags to the tag for the current iteration before passing it to the text editor
@@ -246,7 +246,7 @@ namespace GeneratorSpace
             }
             else//field does not exist
             {
-                lstLog.Items.Add("Field name not found: " + loopField);
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Field name not found: " + loopField);
                 Console.WriteLine("Field name not found: {0}", loopField);
                 return false;
             }
@@ -324,7 +324,7 @@ namespace GeneratorSpace
 
             if (selectionList != null) //make sure there is data in the list
             {
-                lstLog.Items.Add("Applying QV selections.");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying QV selections.");
                 Console.WriteLine("Applying QV selections.");
                 //aggregate static selections and selections to apply into a single list
                 List<Tag> selectionTagList = new List<Tag>();
@@ -373,7 +373,7 @@ namespace GeneratorSpace
                                 Field mField = ReportControl.QVDoc.Fields(item.Field);
                                 for (int i = 0; i < selList.Length; i++)
                                 {
-                                    lstLog.Items.Add("Applying selection to field " + item.Field + " with value " + selList[i]);
+                                    lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying selection to field " + item.Field + " with value " + selList[i]);
                                     Console.WriteLine("Applying selection to field {0} with value {1}", item.Field, selList[i]);
                                     multiSelect.Add();
                                     multiSelect[i].Text = selList[i].Trim();
@@ -388,21 +388,21 @@ namespace GeneratorSpace
                             }
                             else
                             {
-                                lstLog.Items.Add("Applying selection to field " + item.Field + " with value " + item.Selection);
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying selection to field " + item.Field + " with value " + item.Selection);
                                 Console.WriteLine("Applying selection to field {0} with value {1}", item.Field, item.Selection);
                                 ReportControl.QVDoc.Fields(item.Field).Select(item.Selection);
                             }
                         }
                         else
                         {
-                            lstLog.Items.Add("Selection value not found: " + item.Selection);
+                            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection value not found: " + item.Selection);
                             Console.WriteLine("Selection value not found: {0}", item.Selection);
                             return false;
                         }
                     }
                     else
                     {
-                        lstLog.Items.Add("Selection field name not found: " + item.Field);
+                        lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection field name not found: " + item.Field);
                         Console.WriteLine("Selection field name not found: {0}", item.Field);
                         return false;
                     }
@@ -418,7 +418,7 @@ namespace GeneratorSpace
         {
             if (Clipboard.ContainsData(DataFormats.Bitmap))//check data format and paste
             {
-                lstLog.Items.Add("Chart Found");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Chart Found");
                 Console.WriteLine("Chart Found");
                 if (customSizeForImages != null)
                 {
@@ -433,7 +433,9 @@ namespace GeneratorSpace
             }
             else if (Clipboard.ContainsText())
             {
-                lstLog.Items.Add("Text Object Found");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Text Object Found");
+                
+
                 Console.WriteLine("Text Object Found");
                 //  tamp_val = wordSelection.Paste();
                 //change this code
@@ -461,6 +463,13 @@ namespace GeneratorSpace
                     //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
                     wordSelection.Paste();
 
+                } else if (htm != null && htm.ToString().Contains("<TABLE"))
+                {
+                    string argue = htm.ToString().Replace("<TABLE ", "<TABLE align=\"center\" ");
+                    String mm = argue.Replace("style=\"", "style=\"border-collapse:collapse; ");
+                    CopyToClipboard(mm);
+                    //Clipboard.SetData(DataFormats.Html, argue); //this may work sometimes but its not reliable
+                    wordSelection.Paste();
                 }
                 else
                 {
@@ -473,8 +482,9 @@ namespace GeneratorSpace
         {
             String neww3 = htm.ToString().Replace("<TD BGCOLOR=\"#f5f5f5\">&nbsp\t", "");
             String neww1 = neww3.ToString().Replace("<TD BGCOLOR=\"#ffffff\">&nbsp\t", "");
-            String neww2 = neww1.ToString().Replace("<TH NOWRAP BGCOLOR=\"#f5f5f5\"><FONT COLOR=\"#363636\"><B>*<B></B></FONT>\t", "");
-            String neww4 = neww2.Replace("<TABLE ", "<TABLE align=\"center\" ");
+            String neww2 = neww1.ToString().Replace("<TH BGCOLOR=\"#f5f5f5\"><FONT COLOR=\"#363636\"><B>*<B></B></FONT>\t", "");
+            String mm = neww2.Replace("style=\"", "style=\"border-collapse:collapse; ");
+            String neww4 = mm.Replace("<TABLE ", "<TABLE align=\"center\" ");
             String[] spli = neww4.Split(new string[] { "<TR " }, StringSplitOptions.None);
             if (spli.Length > 1)
             {
@@ -492,7 +502,8 @@ namespace GeneratorSpace
                 string ss = $"<TD width=\"{perTD}%\" ";
                 string nw = proc.Replace("<TD ", ss);
                 spli[1] = nw;
-                return String.Join("<TR ", spli);
+                string ret = String.Join("<TR ", spli);
+                return ret;
             }
             return neww4;
         }
@@ -947,7 +958,7 @@ namespace GeneratorSpace
                                     //get the index in the list of the corresponding record
                                     int index = startList.FindIndex(i => i.Item1.Equals(loopField));
 
-                                    lstLog.Items.Add("loop end found: " + loopField);
+                                    lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("loop end found: " + loopField);
                                     Console.WriteLine("loop end found: {0}", loopField);
 
                                     //pass the tuple to the EditWordForLooping method along with the Word index of the
@@ -965,14 +976,14 @@ namespace GeneratorSpace
                                 }
                                 else
                                 {
-                                    lstLog.Items.Add("Looping end found: " + loopField + ", but start not found in the list. Moving on.");
+                                    lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Looping end found: " + loopField + ", but start not found in the list. Moving on.");
                                     Console.WriteLine("Looping end found: {0}, but start not found in the list. Moving on.", loopField);
                                     falseEnds++;
                                 }
                             }
                             else
                             {
-                                lstLog.Items.Add("Looping end found: " + loopField + ", but no starts detected. Moving on.");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Looping end found: " + loopField + ", but no starts detected. Moving on.");
                                 Console.WriteLine("Looping end found: {0}, but no starts detected. Moving on.", loopField);
                                 falseEnds++;
                             }
@@ -992,7 +1003,7 @@ namespace GeneratorSpace
                                 //extract the fieldname
                                 strWord = strWord.Substring(1, strWord.Length - selectionTag.Length - 2);
 
-                                lstLog.Items.Add("Selection tag found");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection tag found");
                                 Console.WriteLine("Selection tag found");
                             }
                             else
@@ -1005,7 +1016,7 @@ namespace GeneratorSpace
                             //started the Looping tag
                             startList.Add(Tuple.Create(strWord, selectionTag, wordSelection.Start));
 
-                            lstLog.Items.Add("loop start found: " + strWord + ", Selection tag: " + selectionTag);
+                            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("loop start found: " + strWord + ", Selection tag: " + selectionTag);
                             Console.WriteLine("loop start found: {0}, Selection tag: {1}", strWord, selectionTag);
                         }
                     }
@@ -1016,20 +1027,20 @@ namespace GeneratorSpace
             {
                 MessageBox.Show("Something went wrong: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                lstLog.Items.Add(ex.StackTrace.ToString());
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add(ex.StackTrace.ToString());
                 Console.WriteLine(ex.StackTrace.ToString());
             }
             finally
             {
-                lstLog.Items.Add("Preparing to exit.");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Preparing to exit.");
                 Console.WriteLine("Preparing to exit.");
 
-                lstLog.Items.Add("############## Looping Results ###################");
-                lstLog.Items.Add("Number of successfully processed Looping tags: " + success.ToString());
-                lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + failed.ToString());
-                lstLog.Items.Add("Number of start tags with no end: " + falseStarts.ToString());
-                lstLog.Items.Add("Number of end tags with no start: " + falseEnds.ToString());
-                lstLog.Items.Add("##############################################");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("############## Looping Results ###################");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of successfully processed Looping tags: " + success.ToString());
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + failed.ToString());
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of start tags with no end: " + falseStarts.ToString());
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of end tags with no start: " + falseEnds.ToString());
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("##############################################");
             }
             return new Tuple<int, int, int, int>(success, failed, falseStarts, falseEnds);
         }
@@ -1068,7 +1079,7 @@ namespace GeneratorSpace
                             //validate any selection tags in the static selection tag text box
                             if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
                             {
-                                lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
                                 Console.WriteLine("Static selection tag validated. Beginning Word search process.");
                                 ReportControl.staticSelections = GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim());//save static selections
 
@@ -1098,25 +1109,25 @@ namespace GeneratorSpace
                                 stopWatch.Stop();
                                 TimeSpan runTime = stopWatch.Elapsed;
 
-                                lstLog.Items.Add("############## Looping Results ##############");
-                                lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
-                                lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
-                                lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
-                                lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
-                                lstLog.Items.Add("##############################################");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("############## Looping Results ##############");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of successfully processed Looping tags: " + BResults.Item1.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of unsuccessfully processed Looping tags: " + BResults.Item2.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of start tags with no end: " + BResults.Item3.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of end tags with no start: " + BResults.Item4.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("##############################################");
 
-                                lstLog.Items.Add("############## Chart Retrieval Breakdown ##############");
-                                lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
-                                lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
-                                lstLog.Items.Add("Run Time: " + runTime.TotalMinutes + " minutes");
-                                lstLog.Items.Add("############## END ##############");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("############## Chart Retrieval Breakdown ##############");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of Charts successfully pasted to word: " + CResults.Item1.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Number of Invalid Chart tags: " + CResults.Item2.ToString());
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Run Time: " + runTime.TotalMinutes + " minutes");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("############## END ##############");
                                 lstLog.SelectedIndex = lstLog.Items.Count - 1;
 
                                 exitWithGrace();
                             }
                             else
                             {
-                                lstLog.Items.Add("Static selection tag could not be validated. Cannot proceed until resolved.");
+                                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Static selection tag could not be validated. Cannot proceed until resolved.");
                                 Console.WriteLine("Static selection tag could not be validated. Cannot proceed until resolved.");
 
                                 //the if statement opens the qlik document, this ensures that it is closed in this path
@@ -1124,7 +1135,7 @@ namespace GeneratorSpace
                             }
                         } catch (Exception ee)
                         {
-                            lstLog.Items.Add($"A(n) {ee.GetType().Name} has caused the program to close");
+                            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add($"A(n) {ee.GetType().Name} has caused the program to close");
                             Console.WriteLine($"A(n) {ee.GetType().Name} has caused the program to close");
                             exitWithGrace();
                         }
@@ -1154,7 +1165,7 @@ namespace GeneratorSpace
             }
             catch (IOException)
             {
-                lstLog.Items.Add("File at path " + filePath + " confirmed to be open.");
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("File at path " + filePath + " confirmed to be open.");
                 Console.WriteLine("File at path {0} confirmed to be open.", filePath);
                 return true;
             }
@@ -1164,7 +1175,7 @@ namespace GeneratorSpace
                 if (stream != null) stream.Close();
             }
 
-            lstLog.Items.Add("File at path " + filePath + " confirmed to be closed");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("File at path " + filePath + " confirmed to be closed");
             Console.WriteLine("File at path {0} confirmed to be closed", filePath);
             return false;
         }
@@ -1184,7 +1195,7 @@ namespace GeneratorSpace
             ReportControl.QVDoc.ClearAll(true);
 
             //method would have broken by now if the document could not be opened, this should probably be in a try-catch
-            lstLog.Items.Add("Qlik document opened.");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Qlik document opened.");
             Console.WriteLine("Qlik document opened.");
         }
 
@@ -1199,7 +1210,7 @@ namespace GeneratorSpace
             ReportControl.WordDoc = ReportControl.WordApp.Documents.Open(ReportControl.wordPath);
 
             //method would have broken by now if the document could not be opened, this should probably be in a try-catch
-            lstLog.Items.Add("Word document opened.");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Word document opened.");
             Console.WriteLine("Word Document opened.");
         }
 
@@ -1275,7 +1286,7 @@ namespace GeneratorSpace
             ReportControl.QVApp = null;
             ReportControl.QVDoc = null;
 
-            lstLog.Items.Add("Qlik document closed.");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Qlik document closed.");
             Console.WriteLine("Qlik document closed.");
         }
 
@@ -1289,7 +1300,7 @@ namespace GeneratorSpace
             {
                 string savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
                 Console.WriteLine(savePath);
-                lstLog.Items.Add("Saving completed print " + savePath);
+                lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Saving completed print " + savePath);
                 ReportControl.WordDoc.SaveAs2(savePath);
                 ReportControl.WordDoc.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
             }
@@ -1297,7 +1308,7 @@ namespace GeneratorSpace
             ReportControl.WordApp = null;
             ReportControl.WordDoc = null;
 
-            lstLog.Items.Add("Word document closed.");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Word document closed.");
             Console.WriteLine("Word document closed.");
         }
 
@@ -1311,7 +1322,7 @@ namespace GeneratorSpace
             closeQlikDocument();
             closeWordDocument();
 
-            lstLog.Items.Add("Finished cleaning up.");
+            lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Finished cleaning up.");
             Console.WriteLine("Finished cleaning up.");
         }
 
