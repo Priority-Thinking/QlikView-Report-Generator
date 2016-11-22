@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\qali\Desktop\publish\</PublishUrl>
+    <PublishUrl>C:\Users\Tim\Desktop\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -63,7 +63,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
