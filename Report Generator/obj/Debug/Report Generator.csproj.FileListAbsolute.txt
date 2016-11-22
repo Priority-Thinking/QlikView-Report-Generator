@@ -24,3 +24,18 @@ C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\bin\Debug\Report
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\bin\Debug\Report Generator.application
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\Report Generator.exe.manifest
 C:\Users\Tim\Documents\GitHub\Report-Generator\Report Generator\obj\Debug\Report Generator.application
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Interop.QlikView.dll
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.csproj.ResolveComReference.cache
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\GeneratorSpace.GenerateReport.resources
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report_Generator.Properties.Resources.resources
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.csproj.GenerateResource.Cache
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.exe
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.pdb
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\bin\Debug\Report Generator.exe.config
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\bin\Debug\Report Generator.exe.manifest
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\bin\Debug\Report Generator.application
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\bin\Debug\Report Generator.exe
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\bin\Debug\Report Generator.pdb
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.csprojResolveAssemblyReference.cache
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.exe.manifest
+C:\Users\qali\Documents\QlikView-Report-Generator\Report Generator\obj\Debug\Report Generator.application
