@@ -422,8 +422,8 @@ namespace GeneratorSpace
 				Console.WriteLine("Chart Found In Clipboard");
 				if (parameters != null)
 				{
-					double inchWidth = Convert.ToDouble(parameters["WIDTH"]);
-					double inchHeight = Convert.ToDouble(parameters["HEIGHT"]);
+					double inchWidth;
+					double inchHeight;
 					int pixelWidth, pixelHeight;
 					float resWidth, resHeight;
 					double hwratio, setHeight, setWidth;
@@ -437,10 +437,14 @@ namespace GeneratorSpace
 
 					if (parameters.ContainsKey("HEIGHT"))
 					{
+						inchHeight = Convert.ToDouble(parameters["HEIGHT"]);
+
 						setHeight = inchHeight * resHeight;
 
 						if(parameters.ContainsKey("WIDTH"))
 						{
+							inchWidth = Convert.ToDouble(parameters["WIDTH"]);
+
 							setWidth = inchWidth * resWidth;
 						}
 						else
@@ -450,6 +454,8 @@ namespace GeneratorSpace
 					}
 					else if (parameters.ContainsKey("WIDTH"))
 					{
+						inchWidth = Convert.ToDouble(parameters["WIDTH"]);
+
 						setWidth = inchWidth * resWidth;
 						setHeight = hwratio * setWidth;
 					}
