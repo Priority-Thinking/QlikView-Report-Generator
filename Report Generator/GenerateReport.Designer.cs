@@ -67,6 +67,7 @@ namespace GeneratorSpace
             this.txtRefName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.cbxOpenWord = new System.Windows.Forms.CheckBox();
+            this.cbxQlikReload = new System.Windows.Forms.CheckBox();
             this.grpStaticSelections.SuspendLayout();
             this.grpSetPaths.SuspendLayout();
             this.grpQuickRef.SuspendLayout();
@@ -84,7 +85,7 @@ namespace GeneratorSpace
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(218, 617);
+            this.btnGenerate.Location = new System.Drawing.Point(219, 652);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(141, 43);
             this.btnGenerate.TabIndex = 2;
@@ -276,18 +277,29 @@ namespace GeneratorSpace
             // cbxOpenWord
             // 
             this.cbxOpenWord.AutoSize = true;
-            this.cbxOpenWord.Location = new System.Drawing.Point(140, 582);
+            this.cbxOpenWord.Location = new System.Drawing.Point(150, 619);
             this.cbxOpenWord.Name = "cbxOpenWord";
             this.cbxOpenWord.Size = new System.Drawing.Size(292, 24);
             this.cbxOpenWord.TabIndex = 16;
             this.cbxOpenWord.Text = "Open Word document when finished";
             this.cbxOpenWord.UseVisualStyleBackColor = true;
             // 
+            // cbxQlikReload
+            // 
+            this.cbxQlikReload.AutoSize = true;
+            this.cbxQlikReload.Location = new System.Drawing.Point(150, 589);
+            this.cbxQlikReload.Name = "cbxQlikReload";
+            this.cbxQlikReload.Size = new System.Drawing.Size(291, 24);
+            this.cbxQlikReload.TabIndex = 17;
+            this.cbxQlikReload.Text = "Reload data in Qlik before beginning";
+            this.cbxQlikReload.UseVisualStyleBackColor = true;
+            // 
             // GenerateReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1178, 672);
+            this.ClientSize = new System.Drawing.Size(1178, 707);
+            this.Controls.Add(this.cbxQlikReload);
             this.Controls.Add(this.cbxOpenWord);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.grpQuickRef);
@@ -334,6 +346,7 @@ namespace GeneratorSpace
         private System.Windows.Forms.ListBox lstQuickRefVars;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cbxOpenWord;
+        private System.Windows.Forms.CheckBox cbxQlikReload;
     }
 }
 

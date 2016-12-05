@@ -1242,6 +1242,11 @@ namespace GeneratorSpace
 			ReportControl.QVDoc.UnlockAll();
 			ReportControl.QVDoc.ClearAll(true);
 
+			if (cbxQlikReload.Checked)
+			{
+				ReportControl.QVDoc.Reload();
+			}
+
 			//method would have broken by now if the document could not be opened, this should probably be in a try-catch
 			lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Qlik document opened.");
 			Console.WriteLine("Qlik document opened.");
@@ -1344,7 +1349,6 @@ namespace GeneratorSpace
 		private void closeWordDocument()
 		{
 			string savePath = "";
-			bool openWord = false;
 
 			//not sure the if statements are completely necessary, but this gets the job done
 			if (ReportControl.WordDoc != null)
@@ -1354,17 +1358,12 @@ namespace GeneratorSpace
 				lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Saving completed print " + savePath);
 				ReportControl.WordDoc.SaveAs2(savePath);
 				ReportControl.WordDoc.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
-
-				if(cbxOpenWord.Checked)
-				{
-					openWord = true;
-				}
 			}
 			ReportControl.WordApp.Quit();
 			ReportControl.WordApp = null;
 			ReportControl.WordDoc = null;
 
-			if (openWord)
+			if (cbxOpenWord.Checked)
 			{
 				var applicationWord = new Word.Application();
 				applicationWord.Visible = true;
