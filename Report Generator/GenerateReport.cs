@@ -1343,21 +1343,41 @@ namespace GeneratorSpace
 		/// </summary>
 		private void closeWordDocument()
 		{
+			string savePath = "";
+			bool openWord = false;
+
 			//not sure the if statements are completely necessary, but this gets the job done
 			if (ReportControl.WordDoc != null)
 			{
-				string savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
+				savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
 				Console.WriteLine(savePath);
 				lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Saving completed print " + savePath);
 				ReportControl.WordDoc.SaveAs2(savePath);
 				ReportControl.WordDoc.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
+
+				if(cbxOpenWord.Checked)
+				{
+					openWord = true;
+				}
 			}
 			ReportControl.WordApp.Quit();
 			ReportControl.WordApp = null;
 			ReportControl.WordDoc = null;
 
-			lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Word document closed.");
-			Console.WriteLine("Word document closed.");
+			if (openWord)
+			{
+				var applicationWord = new Word.Application();
+				applicationWord.Visible = true;
+				applicationWord.Documents.Open(savePath);
+				lstLog.TopIndex = lstLog.Items.Count - 1;
+				lstLog.Items.Add("Opening word document.");
+			}
+			else
+			{
+				lstLog.TopIndex = lstLog.Items.Count - 1;
+				lstLog.Items.Add("Word document closed.");
+				Console.WriteLine("Word document closed.");
+			}
 		}
 
 		/// <summary>

@@ -66,6 +66,7 @@ namespace GeneratorSpace
             this.btnSaveRef = new System.Windows.Forms.Button();
             this.txtRefName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.cbxOpenWord = new System.Windows.Forms.CheckBox();
             this.grpStaticSelections.SuspendLayout();
             this.grpSetPaths.SuspendLayout();
             this.grpQuickRef.SuspendLayout();
@@ -83,7 +84,7 @@ namespace GeneratorSpace
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(218, 579);
+            this.btnGenerate.Location = new System.Drawing.Point(218, 617);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(141, 43);
             this.btnGenerate.TabIndex = 2;
@@ -174,7 +175,7 @@ namespace GeneratorSpace
             this.lstLog.ItemHeight = 20;
             this.lstLog.Location = new System.Drawing.Point(582, 51);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(584, 544);
+            this.lstLog.Size = new System.Drawing.Size(584, 584);
             this.lstLog.TabIndex = 12;
             // 
             // lblLog
@@ -266,17 +267,28 @@ namespace GeneratorSpace
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(593, 604);
+            this.label5.Location = new System.Drawing.Point(593, 643);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(564, 20);
             this.label5.TabIndex = 15;
             this.label5.Text = "Copyright (c) 2016 Institute 4 Priority Thinking, LLC under GNU GPL v3 License\r\n";
             // 
+            // cbxOpenWord
+            // 
+            this.cbxOpenWord.AutoSize = true;
+            this.cbxOpenWord.Location = new System.Drawing.Point(140, 582);
+            this.cbxOpenWord.Name = "cbxOpenWord";
+            this.cbxOpenWord.Size = new System.Drawing.Size(292, 24);
+            this.cbxOpenWord.TabIndex = 16;
+            this.cbxOpenWord.Text = "Open Word document when finished";
+            this.cbxOpenWord.UseVisualStyleBackColor = true;
+            // 
             // GenerateReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1178, 633);
+            this.ClientSize = new System.Drawing.Size(1178, 672);
+            this.Controls.Add(this.cbxOpenWord);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.grpQuickRef);
             this.Controls.Add(this.lblLog);
@@ -321,6 +333,7 @@ namespace GeneratorSpace
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.ListBox lstQuickRefVars;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox cbxOpenWord;
     }
 }
 
