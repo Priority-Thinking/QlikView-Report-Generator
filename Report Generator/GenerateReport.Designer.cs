@@ -66,6 +66,7 @@ namespace GeneratorSpace
             this.btnSaveRef = new System.Windows.Forms.Button();
             this.txtRefName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.ReloadQVData = new System.Windows.Forms.CheckBox();
             this.grpStaticSelections.SuspendLayout();
             this.grpSetPaths.SuspendLayout();
             this.grpQuickRef.SuspendLayout();
@@ -73,9 +74,10 @@ namespace GeneratorSpace
             // 
             // btnWordBrowse
             // 
-            this.btnWordBrowse.Location = new System.Drawing.Point(424, 55);
+            this.btnWordBrowse.Location = new System.Drawing.Point(377, 44);
+            this.btnWordBrowse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnWordBrowse.Name = "btnWordBrowse";
-            this.btnWordBrowse.Size = new System.Drawing.Size(117, 31);
+            this.btnWordBrowse.Size = new System.Drawing.Size(104, 25);
             this.btnWordBrowse.TabIndex = 1;
             this.btnWordBrowse.Text = "Browse";
             this.btnWordBrowse.UseVisualStyleBackColor = true;
@@ -83,9 +85,10 @@ namespace GeneratorSpace
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(218, 579);
+            this.btnGenerate.Location = new System.Drawing.Point(186, 498);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(141, 43);
+            this.btnGenerate.Size = new System.Drawing.Size(125, 34);
             this.btnGenerate.TabIndex = 2;
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -94,24 +97,27 @@ namespace GeneratorSpace
             // txtWordPath
             // 
             this.txtWordPath.Enabled = false;
-            this.txtWordPath.Location = new System.Drawing.Point(6, 55);
+            this.txtWordPath.Location = new System.Drawing.Point(5, 44);
+            this.txtWordPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtWordPath.Name = "txtWordPath";
-            this.txtWordPath.Size = new System.Drawing.Size(409, 26);
+            this.txtWordPath.Size = new System.Drawing.Size(364, 22);
             this.txtWordPath.TabIndex = 3;
             // 
             // txtQlikPath
             // 
             this.txtQlikPath.Enabled = false;
-            this.txtQlikPath.Location = new System.Drawing.Point(6, 122);
+            this.txtQlikPath.Location = new System.Drawing.Point(5, 98);
+            this.txtQlikPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtQlikPath.Name = "txtQlikPath";
-            this.txtQlikPath.Size = new System.Drawing.Size(409, 26);
+            this.txtQlikPath.Size = new System.Drawing.Size(364, 22);
             this.txtQlikPath.TabIndex = 4;
             // 
             // btnQlikBrowse
             // 
-            this.btnQlikBrowse.Location = new System.Drawing.Point(424, 122);
+            this.btnQlikBrowse.Location = new System.Drawing.Point(377, 98);
+            this.btnQlikBrowse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnQlikBrowse.Name = "btnQlikBrowse";
-            this.btnQlikBrowse.Size = new System.Drawing.Size(117, 31);
+            this.btnQlikBrowse.Size = new System.Drawing.Size(104, 25);
             this.btnQlikBrowse.TabIndex = 5;
             this.btnQlikBrowse.Text = "Browse";
             this.btnQlikBrowse.UseVisualStyleBackColor = true;
@@ -120,37 +126,40 @@ namespace GeneratorSpace
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 32);
+            this.label1.Location = new System.Drawing.Point(7, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(172, 20);
+            this.label1.Size = new System.Drawing.Size(154, 17);
             this.label1.TabIndex = 6;
             this.label1.Text = "Path to Word Template";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 99);
+            this.label2.Location = new System.Drawing.Point(7, 79);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(202, 20);
+            this.label2.Size = new System.Drawing.Size(178, 17);
             this.label2.TabIndex = 7;
             this.label2.Text = "Path to QlikView Document";
             // 
             // grpStaticSelections
             // 
             this.grpStaticSelections.Controls.Add(this.txtStaticSelections);
-            this.grpStaticSelections.Location = new System.Drawing.Point(12, 483);
+            this.grpStaticSelections.Location = new System.Drawing.Point(11, 386);
+            this.grpStaticSelections.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpStaticSelections.Name = "grpStaticSelections";
-            this.grpStaticSelections.Size = new System.Drawing.Size(550, 90);
+            this.grpStaticSelections.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpStaticSelections.Size = new System.Drawing.Size(489, 72);
             this.grpStaticSelections.TabIndex = 10;
             this.grpStaticSelections.TabStop = false;
             this.grpStaticSelections.Text = "Static Selections";
             // 
             // txtStaticSelections
             // 
-            this.txtStaticSelections.Location = new System.Drawing.Point(9, 34);
+            this.txtStaticSelections.Location = new System.Drawing.Point(8, 27);
+            this.txtStaticSelections.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtStaticSelections.Multiline = true;
             this.txtStaticSelections.Name = "txtStaticSelections";
-            this.txtStaticSelections.Size = new System.Drawing.Size(535, 37);
+            this.txtStaticSelections.Size = new System.Drawing.Size(476, 30);
             this.txtStaticSelections.TabIndex = 0;
             // 
             // grpSetPaths
@@ -161,9 +170,11 @@ namespace GeneratorSpace
             this.grpSetPaths.Controls.Add(this.label2);
             this.grpSetPaths.Controls.Add(this.txtQlikPath);
             this.grpSetPaths.Controls.Add(this.label1);
-            this.grpSetPaths.Location = new System.Drawing.Point(12, 25);
+            this.grpSetPaths.Location = new System.Drawing.Point(11, 20);
+            this.grpSetPaths.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpSetPaths.Name = "grpSetPaths";
-            this.grpSetPaths.Size = new System.Drawing.Size(550, 174);
+            this.grpSetPaths.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpSetPaths.Size = new System.Drawing.Size(489, 139);
             this.grpSetPaths.TabIndex = 11;
             this.grpSetPaths.TabStop = false;
             this.grpSetPaths.Text = "Set Document Paths";
@@ -171,18 +182,20 @@ namespace GeneratorSpace
             // lstLog
             // 
             this.lstLog.FormattingEnabled = true;
-            this.lstLog.ItemHeight = 20;
-            this.lstLog.Location = new System.Drawing.Point(582, 51);
+            this.lstLog.ItemHeight = 16;
+            this.lstLog.Location = new System.Drawing.Point(517, 41);
+            this.lstLog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(584, 544);
+            this.lstLog.Size = new System.Drawing.Size(520, 436);
             this.lstLog.TabIndex = 12;
+            this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lstLog_SelectedIndexChanged);
             // 
             // lblLog
             // 
             this.lblLog.AutoSize = true;
-            this.lblLog.Location = new System.Drawing.Point(582, 25);
+            this.lblLog.Location = new System.Drawing.Point(517, 20);
             this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(36, 20);
+            this.lblLog.Size = new System.Drawing.Size(32, 17);
             this.lblLog.TabIndex = 13;
             this.lblLog.Text = "Log";
             // 
@@ -195,18 +208,21 @@ namespace GeneratorSpace
             this.grpQuickRef.Controls.Add(this.label3);
             this.grpQuickRef.Controls.Add(this.btnSaveRef);
             this.grpQuickRef.Controls.Add(this.txtRefName);
-            this.grpQuickRef.Location = new System.Drawing.Point(12, 214);
+            this.grpQuickRef.Location = new System.Drawing.Point(11, 171);
+            this.grpQuickRef.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpQuickRef.Name = "grpQuickRef";
-            this.grpQuickRef.Size = new System.Drawing.Size(550, 260);
+            this.grpQuickRef.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpQuickRef.Size = new System.Drawing.Size(489, 208);
             this.grpQuickRef.TabIndex = 14;
             this.grpQuickRef.TabStop = false;
             this.grpQuickRef.Text = "Quick Reference Variables";
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(346, 209);
+            this.btnRemove.Location = new System.Drawing.Point(308, 167);
+            this.btnRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(117, 31);
+            this.btnRemove.Size = new System.Drawing.Size(104, 25);
             this.btnRemove.TabIndex = 12;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -215,42 +231,45 @@ namespace GeneratorSpace
             // lstQuickRefVars
             // 
             this.lstQuickRefVars.FormattingEnabled = true;
-            this.lstQuickRefVars.ItemHeight = 20;
-            this.lstQuickRefVars.Location = new System.Drawing.Point(292, 36);
+            this.lstQuickRefVars.ItemHeight = 16;
+            this.lstQuickRefVars.Location = new System.Drawing.Point(260, 29);
+            this.lstQuickRefVars.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lstQuickRefVars.Name = "lstQuickRefVars";
-            this.lstQuickRefVars.Size = new System.Drawing.Size(228, 164);
+            this.lstQuickRefVars.Size = new System.Drawing.Size(203, 132);
             this.lstQuickRefVars.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 119);
+            this.label4.Location = new System.Drawing.Point(10, 95);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(134, 20);
+            this.label4.Size = new System.Drawing.Size(117, 17);
             this.label4.TabIndex = 10;
             this.label4.Text = "Text Box Chart ID";
             // 
             // txtRefID
             // 
-            this.txtRefID.Location = new System.Drawing.Point(9, 142);
+            this.txtRefID.Location = new System.Drawing.Point(8, 114);
+            this.txtRefID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtRefID.Name = "txtRefID";
-            this.txtRefID.Size = new System.Drawing.Size(250, 26);
+            this.txtRefID.Size = new System.Drawing.Size(223, 22);
             this.txtRefID.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 46);
+            this.label3.Location = new System.Drawing.Point(10, 37);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(162, 20);
+            this.label3.Size = new System.Drawing.Size(145, 17);
             this.label3.TabIndex = 8;
             this.label3.Text = "Quick Reference Text";
             // 
             // btnSaveRef
             // 
-            this.btnSaveRef.Location = new System.Drawing.Point(63, 209);
+            this.btnSaveRef.Location = new System.Drawing.Point(56, 167);
+            this.btnSaveRef.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSaveRef.Name = "btnSaveRef";
-            this.btnSaveRef.Size = new System.Drawing.Size(117, 31);
+            this.btnSaveRef.Size = new System.Drawing.Size(104, 25);
             this.btnSaveRef.TabIndex = 8;
             this.btnSaveRef.Text = "Add";
             this.btnSaveRef.UseVisualStyleBackColor = true;
@@ -258,25 +277,38 @@ namespace GeneratorSpace
             // 
             // txtRefName
             // 
-            this.txtRefName.Location = new System.Drawing.Point(9, 69);
+            this.txtRefName.Location = new System.Drawing.Point(8, 55);
+            this.txtRefName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtRefName.Name = "txtRefName";
-            this.txtRefName.Size = new System.Drawing.Size(250, 26);
+            this.txtRefName.Size = new System.Drawing.Size(223, 22);
             this.txtRefName.TabIndex = 0;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(593, 604);
+            this.label5.Location = new System.Drawing.Point(527, 483);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(564, 20);
+            this.label5.Size = new System.Drawing.Size(509, 17);
             this.label5.TabIndex = 15;
             this.label5.Text = "Copyright (c) 2016 Institute 4 Priority Thinking, LLC under GNU GPL v3 License\r\n";
             // 
+            // ReloadQVData
+            // 
+            this.ReloadQVData.AutoSize = true;
+            this.ReloadQVData.Location = new System.Drawing.Point(19, 464);
+            this.ReloadQVData.Name = "ReloadQVData";
+            this.ReloadQVData.Size = new System.Drawing.Size(334, 21);
+            this.ReloadQVData.TabIndex = 16;
+            this.ReloadQVData.Text = "Reload QlikView Data Before Generating Report";
+            this.ReloadQVData.UseVisualStyleBackColor = true;
+            this.ReloadQVData.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // GenerateReport
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1178, 633);
+            this.ClientSize = new System.Drawing.Size(1047, 565);
+            this.Controls.Add(this.ReloadQVData);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.grpQuickRef);
             this.Controls.Add(this.lblLog);
@@ -284,6 +316,7 @@ namespace GeneratorSpace
             this.Controls.Add(this.grpSetPaths);
             this.Controls.Add(this.grpStaticSelections);
             this.Controls.Add(this.btnGenerate);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GenerateReport";
             this.Text = "Generate Report";
             this.Load += new System.EventHandler(this.GenerateReport_Load);
@@ -321,6 +354,7 @@ namespace GeneratorSpace
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.ListBox lstQuickRefVars;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox ReloadQVData;
     }
 }
 

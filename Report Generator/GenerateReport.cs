@@ -1194,6 +1194,11 @@ namespace GeneratorSpace
             ReportControl.QVDoc.UnlockAll();
             ReportControl.QVDoc.ClearAll(true);
 
+            if (ReloadQVData.Checked)
+            {
+                ReportControl.QVDoc.Reload();
+            }
+            
             //method would have broken by now if the document could not be opened, this should probably be in a try-catch
             lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Qlik document opened.");
             Console.WriteLine("Qlik document opened.");
@@ -1282,6 +1287,7 @@ namespace GeneratorSpace
         {
             //not sure the if statements are completely necessary, but this gets the job done
             if (ReportControl.QVDoc != null) ReportControl.QVDoc.CloseDoc();
+
             if (ReportControl.QVApp != null) ReportControl.QVApp.Quit();
             ReportControl.QVApp = null;
             ReportControl.QVDoc = null;
@@ -1295,21 +1301,32 @@ namespace GeneratorSpace
         /// </summary>
         private void closeWordDocument()
         {
+            string savePath = "";
+            bool weAreGood = false;
             //not sure the if statements are completely necessary, but this gets the job done
             if (ReportControl.WordDoc != null)
             {
-                string savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
+                savePath = Path.GetFullPath(ReportControl.wordPath).Replace(Path.GetExtension(ReportControl.wordPath), "-v"+DateTime.Now.ToString("yyyyMMddHHmm")) + Path.GetExtension(ReportControl.wordPath);
                 Console.WriteLine(savePath);
                 lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Saving completed print " + savePath);
                 ReportControl.WordDoc.SaveAs2(savePath);
                 ReportControl.WordDoc.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
+                weAreGood = true;
             }
             ReportControl.WordApp.Quit();
             ReportControl.WordApp = null;
             ReportControl.WordDoc = null;
+            
+            if (weAreGood) // opening word doc 
+            {
+                var applicationWord = new Microsoft.Office.Interop.Word.Application();
+                applicationWord.Visible = true;
+                applicationWord.Documents.Open(savePath);
+            }
 
             lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Word document closed.");
             Console.WriteLine("Word document closed.");
+
         }
 
         /// <summary>
@@ -1381,6 +1398,14 @@ namespace GeneratorSpace
                 }
             }
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void lstLog_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
     }
 
     internal static class ReportControl
@@ -1392,6 +1417,7 @@ namespace GeneratorSpace
 
         public static string qlikPath { get; set; }
         public static QlikView.Application QVApp { get; set; }
+        
         public static Doc QVDoc { get; set; }
 
         public static List<Tag> staticSelections { get; set; }
