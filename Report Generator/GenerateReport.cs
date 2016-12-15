@@ -6,6 +6,7 @@ using Word = Microsoft.Office.Interop.Word;
 using QlikView;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 /*
 	This file is part of Report Generator.
@@ -238,7 +239,7 @@ namespace GeneratorSpace
 						ReportControl.WordDoc.Range(copyEnd, copyEnd).Paste();
 						copyEnd += pasteText.Length;
 					}
-					ReportControl.WordDoc.Range(copyEnd, copyEnd + loopField.Length + 4).Delete();//remove the end of the Looping tag
+					ReportControl.WordDoc.Range(copyEnd, copyEnd + loopField.Length + 5).Delete();//remove the end of the Looping tag
 					Clipboard.Clear();
 					return true;
 				}//field has no possible selections
@@ -422,51 +423,48 @@ namespace GeneratorSpace
 				Console.WriteLine("Chart Found In Clipboard");
 				if (parameters != null)
 				{
-					double inchWidth;
-					double inchHeight;
-					int pixelWidth, pixelHeight;
-					float resWidth, resHeight;
-					double hwratio, setHeight, setWidth;
+					Bitmap oldImage = (Bitmap)Clipboard.GetData(DataFormats.Bitmap);
+					double ratio = (double)oldImage.Height / oldImage.Width;
+					if (ratio == 0.0) ratio = 1.0;
+					int oldWidth = oldImage.Width;
+					int oldHeight = oldImage.Height;
 
-					System.Drawing.Bitmap img = (System.Drawing.Bitmap)Clipboard.GetData(DataFormats.Bitmap);
-					resWidth = img.HorizontalResolution;
-					resHeight = img.VerticalResolution;
-					pixelWidth = img.Width;
-					pixelHeight = img.Height;
-					hwratio = pixelHeight / pixelWidth;
+					double tnewWidth = oldWidth;
+					double tnewHeight = oldHeight;
 
-					if (parameters.ContainsKey("HEIGHT"))
+					int newWidth = oldWidth;
+					int newHeight = oldHeight;
+
+
+					if (parameters.ContainsKey("HEIGHT") && parameters.ContainsKey("WIDTH"))
 					{
-						inchHeight = Convert.ToDouble(parameters["HEIGHT"]);
+						tnewWidth = Convert.ToDouble(parameters["WIDTH"]);
+						newWidth = (int)(oldImage.HorizontalResolution * tnewWidth);
+						tnewHeight = Convert.ToDouble(parameters["HEIGHT"]);
+						newHeight = (int)(oldImage.VerticalResolution * tnewHeight);
 
-						setHeight = inchHeight * resHeight;
-
-						if(parameters.ContainsKey("WIDTH"))
-						{
-							inchWidth = Convert.ToDouble(parameters["WIDTH"]);
-
-							setWidth = inchWidth * resWidth;
-						}
-						else
-						{
-							setWidth = setHeight / hwratio;
-						}
 					}
 					else if (parameters.ContainsKey("WIDTH"))
 					{
-						inchWidth = Convert.ToDouble(parameters["WIDTH"]);
-
-						setWidth = inchWidth * resWidth;
-						setHeight = hwratio * setWidth;
+						tnewWidth = Convert.ToDouble(parameters["WIDTH"]);
+						newWidth = (int)(oldImage.HorizontalResolution * tnewWidth);
+						newHeight = (int)(newWidth * ratio);
+					}
+					else if (parameters.ContainsKey("HEIGHT"))
+					{
+						tnewHeight = Convert.ToDouble(parameters["HEIGHT"]);
+						newHeight = (int)(oldImage.VerticalResolution * tnewHeight);
+						newWidth = (int)(newHeight / ratio);
 					}
 					else
 					{
-						setWidth = pixelWidth;
-						setHeight = pixelHeight;
+						wordSelection.Paste();
+						return;
 					}
 
-					System.Drawing.Bitmap resizedImg = new System.Drawing.Bitmap(img,Convert.ToInt32(setWidth),Convert.ToInt32(setHeight));
-					Clipboard.SetData(DataFormats.Bitmap, resizedImg);
+					Bitmap newImage = new Bitmap(oldImage, new Size(newWidth, newHeight));
+					Clipboard.SetData(DataFormats.Bitmap, newImage);
+					//wordSelection.PasteSpecial(0, false, Word.WdOLEPlacement.wdInLine, false, Word.WdPasteDataType.wdPasteEnhancedMetafile);
 					wordSelection.Paste();
 				}
 				else
@@ -1432,7 +1430,6 @@ namespace GeneratorSpace
 
 		private void btnRemove_Click(object sender, EventArgs e)
 		{
-
 			if (lstQuickRefVars.SelectedItem != null)
 			{
 				string listItem = lstQuickRefVars.GetItemText(lstQuickRefVars.SelectedItem);

@@ -176,7 +176,7 @@ namespace GeneratorSpace
             this.lstLog.ItemHeight = 20;
             this.lstLog.Location = new System.Drawing.Point(582, 51);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(584, 584);
+            this.lstLog.Size = new System.Drawing.Size(584, 604);
             this.lstLog.TabIndex = 12;
             // 
             // lblLog
@@ -268,11 +268,11 @@ namespace GeneratorSpace
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(593, 643);
+            this.label5.Location = new System.Drawing.Point(593, 663);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(564, 20);
+            this.label5.Size = new System.Drawing.Size(557, 20);
             this.label5.TabIndex = 15;
-            this.label5.Text = "Copyright (c) 2016 Institute 4 Priority Thinking, LLC under GNU GPL v3 License\r\n";
+            this.label5.Text = "Copyright © 2016 Institute 4 Priority Thinking, LLC under GNU GPL v3 License\r\n";
             // 
             // cbxOpenWord
             // 
