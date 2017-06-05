@@ -31,7 +31,7 @@ namespace Report_Generator
         /// Company: Institute 4 Priority Thinking, LLC.
         /// Contact Website: www.prioritythinking.com
         /// Authors: Tim Kendrick, John Murray, Mitali Ajgaonkar, Grant Parker
-        /// Date: 7/11/2016
+        /// Date: 05/06/2017
         /// License: GNU LESSER GENERAL PUBLIC LICENSE VERSION 3 (GPLv3)
         /// </summary>
         [STAThread]

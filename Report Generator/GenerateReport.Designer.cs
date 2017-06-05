@@ -45,6 +45,7 @@ namespace GeneratorSpace
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GenerateReport));
             this.btnWordBrowse = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.txtWordPath = new System.Windows.Forms.TextBox();
@@ -268,11 +269,11 @@ namespace GeneratorSpace
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(593, 663);
+            this.label5.Location = new System.Drawing.Point(637, 663);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(557, 20);
+            this.label5.Size = new System.Drawing.Size(482, 20);
             this.label5.TabIndex = 15;
-            this.label5.Text = "Copyright © 2016 Institute 4 Priority Thinking, LLC under GNU GPL v3 License\r\n";
+            this.label5.Text = "Copyright © 2017 Priority Thinking, LLC under GNU GPL v3 License\r\n";
             // 
             // cbxOpenWord
             // 
@@ -308,6 +309,7 @@ namespace GeneratorSpace
             this.Controls.Add(this.grpSetPaths);
             this.Controls.Add(this.grpStaticSelections);
             this.Controls.Add(this.btnGenerate);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GenerateReport";
             this.Text = "Report Generator";
             this.Load += new System.EventHandler(this.GenerateReport_Load);

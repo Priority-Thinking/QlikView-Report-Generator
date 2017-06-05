@@ -760,7 +760,6 @@ namespace GeneratorSpace
 				List<Tuple<string, string>> QuickRefValue = new List<Tuple<string, string>>();
 				if (tagText != string.Empty && tagText[0].ToString() == "!")
 				{
-					//headerText.re
 					Console.WriteLine("Found quick reference tag: {0}", tagText);
 					Clipboard.Clear();
 					QuickRefValue = QuickRefVars.Where(x => x.Key.Equals(tagText.Substring(1))).Select(x => x.Value).ToList();
