@@ -227,7 +227,7 @@ namespace GeneratorSpace
 					{
 						lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying field selection to " + loopField + " with a value of " + selections[i].Text);
 						Console.WriteLine("Applying field selection to {0} with a value of {1}", loopField, selections[i].Text);
-						//pasteText = copyText.Trim().TrimEnd('>')+"{"+loopField+","+selections[i].Text+","+loopSelectionTag.Trim('{','}')+"}>\v";
+
 						//add loop selection tags to the tag for the current iteration before passing it to the text editor
 						Tag loopTag = new GeneratorSpace.Tag(loopField, selections[i].Text);
 						List<Tag> allTags = GeneratorSpace.Tag.interpretSelectionTag(loopSelectionTag);
@@ -255,7 +255,7 @@ namespace GeneratorSpace
 
 		//checks syntax of interpretSelectionTag and turns a raw string of format {field1,selection1,field2,selection2...} into touples
 		//DEPRICATED, use Tag.interpretSelectionTag instead
-		public static List<Tuple<string, string>> interpretSelectionTag(string selectionTag)
+		public List<Tuple<string, string>> interpretSelectionTag(string selectionTag)
 		{
 			Console.WriteLine("Selection tag to interpret: {0}", selectionTag);
 			List<Tuple<string, string>> selections = new List<Tuple<string, string>>();
@@ -291,25 +291,28 @@ namespace GeneratorSpace
 								selectionTag = selectionTag.Remove(1, fieldValue.Length + 1);
 							}
 
-							selections.Add(Tuple.Create(fieldName.Trim(), fieldValue.Trim()));
+							selections.Add(Tuple.Create(fieldName, fieldValue));
 						}
 
 						return selections;
 					}
 					else
 					{
+						lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection tag invalid, incorrect number of arguments: " + selectionTag);
 						Console.WriteLine("Selection tag invalid, incorrect number of arguments: {0}", selectionTag);
 						return null;
 					}
 				}
 				else
 				{
+					lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection tag invalid, improper brace structure: " + selectionTag);
 					Console.WriteLine("Selection tag invalid, improper brace structure: {0}", selectionTag);
 					return null;
 				}
 			}
 			else
 			{
+				lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Selection tag was null");
 				Console.WriteLine("Selection tag was null");
 				return selections;
 			}
@@ -377,10 +380,10 @@ namespace GeneratorSpace
 									lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Applying selection to field " + item.Field + " with value " + selList[i]);
 									Console.WriteLine("Applying selection to field {0} with value {1}", item.Field, selList[i]);
 									multiSelect.Add();
-									multiSelect[i].Text = selList[i].Trim();
+									multiSelect[i].Text = selList[i];
 									if (mField.GetProperties().IsNumeric)//if it is numeric, we have to set the number
 									{
-										mField.Select(selList[i].Trim());
+										mField.Select(selList[i]);
 										multiSelect[i].IsNumeric = true;
 										multiSelect[i].Number = mField.GetSelectedValues()[0].Number;//QV does not have a "get value" function afaik, this is slow but works
 									}
@@ -1122,11 +1125,11 @@ namespace GeneratorSpace
 							openQlikDocument();
 
 							//validate any selection tags in the static selection tag text box
-							if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim())) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim()) != null)
+							if (applyQVSelections(GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text)) && GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text) != null)
 							{
 								lstLog.TopIndex = lstLog.Items.Count - 1; lstLog.Items.Add("Static selection tag validated. Beginning Word search process.");
 								Console.WriteLine("Static selection tag validated. Beginning Word search process.");
-								ReportControl.staticSelections = GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text.Trim());//save static selections
+								ReportControl.staticSelections = GeneratorSpace.Tag.interpretSelectionTag(txtStaticSelections.Text);//save static selections
 
 								preProcessing(ReportControl.WordDoc.Content);       //removes square brackets from charts so no false positives during Looping
 								Tuple<int, int, int, int> BResults;
@@ -1444,6 +1447,18 @@ namespace GeneratorSpace
 				}
 			}
 		}
+
+		private void btnCopyText_Click(object sender, EventArgs e)
+		{
+			string log = "";
+
+			foreach(string item in lstLog.Items)
+			{
+				log += item + System.Environment.NewLine;
+			}
+
+			Clipboard.SetText(log);
+		}
 	}
 
 	internal static class ReportControl
@@ -1606,7 +1621,7 @@ namespace GeneratorSpace
 								selectionTag = selectionTag.Remove(1, fieldValue.Length + 2);
 							}
 
-							selections.Add(new Tag(fieldName.Trim().Replace("#%1234", "','"), fieldValue.Trim().Replace("#%1234", "','")));
+							selections.Add(new Tag(fieldName.Replace("#%1234", "','"), fieldValue.Replace("#%1234", "','")));
 						}
 
 						return selections;

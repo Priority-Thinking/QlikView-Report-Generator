@@ -69,6 +69,7 @@ namespace GeneratorSpace
             this.label5 = new System.Windows.Forms.Label();
             this.cbxOpenWord = new System.Windows.Forms.CheckBox();
             this.cbxQlikReload = new System.Windows.Forms.CheckBox();
+            this.btnCopyText = new System.Windows.Forms.Button();
             this.grpStaticSelections.SuspendLayout();
             this.grpSetPaths.SuspendLayout();
             this.grpQuickRef.SuspendLayout();
@@ -295,11 +296,22 @@ namespace GeneratorSpace
             this.cbxQlikReload.Text = "Reload data in Qlik before beginning";
             this.cbxQlikReload.UseVisualStyleBackColor = true;
             // 
+            // btnCopyText
+            // 
+            this.btnCopyText.Location = new System.Drawing.Point(954, 12);
+            this.btnCopyText.Name = "btnCopyText";
+            this.btnCopyText.Size = new System.Drawing.Size(212, 32);
+            this.btnCopyText.TabIndex = 18;
+            this.btnCopyText.Text = "Copy Log to Clipboard";
+            this.btnCopyText.UseVisualStyleBackColor = true;
+            this.btnCopyText.Click += new System.EventHandler(this.btnCopyText_Click);
+            // 
             // GenerateReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 707);
+            this.Controls.Add(this.btnCopyText);
             this.Controls.Add(this.cbxQlikReload);
             this.Controls.Add(this.cbxOpenWord);
             this.Controls.Add(this.label5);
@@ -349,6 +361,7 @@ namespace GeneratorSpace
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cbxOpenWord;
         private System.Windows.Forms.CheckBox cbxQlikReload;
+        private System.Windows.Forms.Button btnCopyText;
     }
 }
 
