@@ -63,7 +63,7 @@ The above example sets the height to 2 inches and the width to 3.55. Specifying 
 #### Pivot Tables
 In pivot tables any column with the label as a single asterisk will be deleted.
 
-### Using the Application
+# Using the Application
 Reference interface.png to see what the application looks like when run.
 
 #### Set Document Paths
