@@ -92,7 +92,7 @@ RG-Example.doc
 We find it helpful to turn on the hidden characters in Word (Crtl + Shift + 8)
 
 Prescription Tracker.qvw  
-This document is included when you download QlikView 12.0. Go to the Program Files, Examples folder, then Data folder to find this document.
+This document is included when you download QlikView 12.0. The example QlikView document is located at the following path, C:\Program Files\QlikView\Examples\Documents\Prescription Tracker.qvw
 
 Target these two files with the Report Generator and click Generate to watch it run. 
 
