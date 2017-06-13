@@ -6,6 +6,8 @@ The Report Generator bridges QlikView Personal Edition (Desktop) 12.0, which can
 
 To simply run the application, open the ReportGeneratorSetup/Debug folder in the main project and download and run the ReportGeneratorSetup.msi (Windows Installer Package) file. This will create a program called "Report Generator (Active)". Download the entire project if you wish to contribute features and ideas. Don't hesistate to contact us directly!
 
+We also have a quick tutorial video on YouTube here: https://youtu.be/WYofPNv9V_0
+
 ### Understanding the Tags
 
 Tags are placed in the Word template so the Report Generator knows where to paste QlikView objects.  
