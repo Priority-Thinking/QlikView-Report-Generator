@@ -2,6 +2,10 @@
 
 The Report Generator bridges QlikView Personal Edition (Desktop) 12.0, which can be downloaded here: http://www.qlik.com/products, and Microsoft Word to facilitate the automatic copy/pasting of charts and objects into tagged locations in the Word document while making specified selections in the QlikView engine. The intent is that a user creates a Word template and a QikView chart repository in order to run small batches of custom reports on a Windows machine.
 
+## Why Would I Use This?
+
+The main benefits of this project compared to QlikView's built in reporting and Qlik NPrinting is threefold; it's free, it's open source, and it works with QlikView Personal Edition. This project was developed for the specific needs of our organization (which is why it outputs a Word document), and we encourage other developers to add features to fit their own needs. For instance, our organization has developed a "Report Generator Server" project which allows us to automatically email reports on a schedule or when a request is sent to the server. By no means are we attempting to compete with Qlik's existing methods of report generation. We are simply trying to build a flexible, developer-friendly project for the Qlik Community.
+
 ## Getting Started
 
 To simply run the application, open the ReportGeneratorSetup/Debug folder in the main project and download and run the ReportGeneratorSetup.msi (Windows Installer Package) file. This will create a program called "Report Generator (Active)". Download the entire project if you wish to contribute features and ideas. Don't hesistate to contact us directly!
@@ -115,7 +119,7 @@ This project was built and tested with the following software versions:
 
 QlikView 11.20, 12.0  
 MS Word 2013, 2016  
-Windows 8.1 Pro, 10 Pro  
+Windows 8.1 Pro, 10 Pro (64-bit)  
 
 ## Contributing
 
