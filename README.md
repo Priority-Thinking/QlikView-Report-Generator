@@ -154,4 +154,4 @@ Qasim Ali
 
 Rochester Institute of Technology  
 https://community.qlik.com/  
-www.prioritythinking.com
+https://www.prioritythinking.com
