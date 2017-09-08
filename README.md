@@ -1,6 +1,6 @@
 # Report Generator
 
-The Report Generator bridges QlikView Personal Edition (Desktop) 12.0, which can be downloaded here: http://www.qlik.com/products, and Microsoft Word to facilitate the automatic copy/pasting of charts and objects into tagged locations in the Word document while making specified selections in the QlikView engine. The intent is that a user creates a Word template and a QikView chart repository in order to run small batches of custom reports on a Windows machine.
+The Report Generator bridges QlikView Personal Edition (Desktop) 12.0, which can be downloaded here: http://www.qlik.com/products, and Microsoft Word to facilitate the automatic copy/pasting of charts and objects into tagged locations in the Word document while making specified selections in the QlikView engine. The intent is that a user creates a Word template and a QlikView chart repository in order to run small batches of custom reports on a Windows machine.
 
 ## Why Would I Use This?
 
