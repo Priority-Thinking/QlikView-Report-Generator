@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.exe
+Report Generator/obj/Debug/Report Generator.csproj.ResolveComReference.cache
+*.suo
